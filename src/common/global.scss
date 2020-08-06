@@ -1,0 +1,226 @@
+// 隐藏滚动条
+html, body, .uni-scroll-view {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+// 显示隐藏，小程序v-show不起作用
+.show-block {
+  display: block !important;
+}
+.show-inline {
+  display: inline-block !important;
+}
+.hide {
+  display: none !important;
+}
+// 云村,视频,搜索页面导航条
+.village {
+  .u-tabs {
+    position: fixed;
+  }
+  .u-tabs-scroll-box {
+    text-align: center;
+    .u-tabs-item {
+      &:active {
+        background-color: rgba(0, 0, 0, .1);
+      }
+    }
+    .u-scroll-bar {
+      margin-left: $width*0.29;
+    }
+  }
+}
+.video-index, .search-tabs {
+  .u-tabs {
+    position: fixed;
+  }
+  .u-tabs-item {
+    &:active {
+      background-color: rgba(0, 0, 0, .1);
+    }
+  }
+}
+// 发现页按钮
+.title-btn {
+  position: relative;
+  z-index: 2;
+  width: 165rpx;
+  height: 50rpx;
+  margin: 0;
+  line-height: 50rpx;
+  font-size: 26rpx;
+  color: #3d3d3d;
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 25rpx;
+  &:active {
+    border: none;
+    background-color: rgba(0, 0, 0, .1);
+  }
+}
+// 点击效果
+.on-touch {
+  &:active {
+    background-color: rgba(1, 1, 1, 0.1);
+  }
+}
+// 点击圆角效果
+.ripple {
+  position: relative;
+  overflow: hidden;
+  &:active::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(1, 1, 1, 0.2);
+    transform: scale(6, 6);
+    opacity: .5;
+  }
+  &::after {
+    content: '';
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+}
+// 我的页面折叠面板
+.u-collapse-head {
+  padding: 0 !important;
+}
+// 歌单，歌曲样式
+.song-group {
+  display: flex;
+  flex-direction: column;
+  width: $width;
+  .song-list {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: $height;
+    .left {
+      display: flex;
+      align-items: center;
+      flex: 3.2;
+      // 左侧图像
+      .list-cover {
+        padding: 10rpx 23rpx 10rpx 27rpx;
+        .bgc {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100rpx;
+          height: 100rpx;
+          background: rgba(0, 0, 0, 0.8);
+          border-radius: 10rpx;
+          text {
+            color: #fff;
+            font-size: 50rpx;
+          }
+        }
+      }
+      // 歌单信息
+      .list-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        flex: 1;
+        height: 100rpx;
+        padding: 10rpx 0;
+        .list-title {
+          width: 480rpx;
+          padding-top: 1rpx;
+          font-size: 29rpx;
+          color: black;
+        }
+        .list-num {
+          width: $width*0.95;
+          padding-top: 1rpx;
+          color: rgb(112, 111, 111);
+          font-size: 24rpx;
+        }
+      }
+      .home-info {
+        width: 300rpx;
+      }
+    }
+    // 心动按钮
+    .heart-module {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      height: $height;
+      padding-right: 33rpx;
+      font-size: 18rpx;
+      uni-button::after {
+        border: none;
+      }
+      .title-btn {
+        padding: 0;
+        border: 1px solid #eaeaea;
+        .icon-xindong {
+          font-size: 20rpx;
+          margin-right: 5rpx;
+        }
+      }
+    }
+    // 歌单右侧编辑
+    .compile {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: .32;
+      height: $height;
+      padding-right: 23rpx;
+      .icon-sandian {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        height: $height;
+        font-size: 33rpx;
+      }
+    }
+    // 通过兄弟选择器来使整个容器active
+    .left:active, .left:active ~* {
+      background: rgba(1, 1, 1, .1);
+      .title-btn {
+        background: transparent;
+      }
+    }
+  }
+}
+// 可移动tab选项卡公共样式
+.tabs-swiper {
+	width: $width;
+	height: calc(100vh - 60px);
+	.tab-swiper-item {
+		overflow-y: scroll;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+		&::-webkit-scrollbar {
+			display: none;
+		}
+	}
+}
+// 空内容
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: $width;
+  height: 70%;
+  text-align: center;
+  font-size: 32rpx;
+  .icon-kong {
+    margin-bottom: 40rpx;
+    color: $defaultColor;
+    font-size: 300rpx;
+    -webkit-text-stroke: 4px #fff;
+  }
+}
