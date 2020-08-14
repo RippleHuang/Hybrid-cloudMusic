@@ -35,14 +35,14 @@
         userInfo
         :privacy="0"
         :playCount="item.playCount"
-        @tap.native="$router.push(`/showsong?albumId=${item.id}`)"
+        @eventThing="goSongShow(item.id, 'albumId')"
       />
     </view>
     <view class="more on-touch" v-if="typeData.playListText" @tap="moreList(5)">{{typeData.playListText}}&nbsp;&gt;</view>
     <!-- 视频 -->
     <view class="title" v-if="typeData.video">视频</view>
     <video-list
-      :data="typeData.video"
+      :videoData="typeData.video"
       search
     />
     <view class="more on-touch" v-if="typeData.videoText" @tap="moreList(2)">{{typeData.videoText}}&nbsp;&gt;</view>
@@ -60,7 +60,7 @@
     <!-- 歌手 -->
     <view class="title" v-if="typeData.artist">歌手</view>
     <artists-or-user
-      :data="typeData.artist"
+      :otherData="typeData.artist"
       songer
     />
     <view class="more on-touch" v-if="typeData.artistText" @tap="moreList(3)">{{typeData.artistText}}&nbsp;&gt;</view>
@@ -75,15 +75,15 @@
         :trackCount="item.size"
         :publishTime="item.publishTime"
         :privacy="0"
-        :id="item.id"
-        @tap.native="$router.push(`/showsong?dishId=${item.id}`)"
+        :songListId="item.id"
+        @eventThing="goSongShow(item.id, 'dishId')"
       />
     </view>
     <view class="more on-touch" v-if="typeData.albumText" @tap="moreList(4)">{{typeData.albumText}}&nbsp;&gt;</view>
     <!-- 用户 -->
     <view class="title" v-if="typeData.user">用户</view>
     <artists-or-user
-      :data="typeData.user"
+      :otherData="typeData.user"
       user
     />
     <view class="more on-touch" v-if="typeData.userText" @tap="moreList(6)">{{typeData.userText}}&nbsp;&gt;</view>
@@ -105,16 +105,14 @@ export default {
   watch: {
     resultData: {
       handler (val, oldV) {
-        if (JSON.stringify(val) !== '{}') {
-          const array = val.order ? val.order : []
-          const dataName = array.map(item => item)
-          dataName.splice(4, 2)
+        if (val != null) {
+          const dataName = ['song', 'video', 'playList', 'sim_query', 'artist', 'album', 'user']
           // 添加新属性
           for (let index = 0; index < dataName.length; index++) {
             this.$set(this.typeData, dataName[index], {})
             this.$set(this.typeData, dataName[index] + 'Text', '')
             // 对应数据不为空
-            if (JSON.stringify(val[dataName[index]]) !== '{}') {
+            if (val[dataName[index]] != null) {
               this.typeData[dataName[index]] = val[dataName[index]][dataName[index] + 's']
               this.typeData[dataName[index] + 'Text'] = val[dataName[index]]['moreText']
             }
@@ -129,6 +127,13 @@ export default {
     ...mapGetters(['audioIngSong'])
   },
   methods: {
+    goSongShow (id, type) {
+      uni.navigateTo({
+				url: `../showsong/showSongList?${type}=${id}`,
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
+    },
     moreList (active) {
       this.$emit('changeActive', active)
     },

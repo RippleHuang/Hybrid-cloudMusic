@@ -130,12 +130,6 @@ export default {
 	created() {
 		this.updateValue(this.value, false);
 	},
-	mounted() {
-		// 获取滑块条的尺寸信息
-		this.$uGetRect('.u-slider').then(rect => {
-			this.sliderRect = rect;
-		});
-	},
 	methods: {
 		onTouchStart(event) {
 			if (this.disabled) return;
@@ -151,6 +145,10 @@ export default {
 		},
 		onTouchMove(event) {
 			if (this.disabled) return;
+			// 获取滑块条的尺寸信息
+			this.$uGetRect('.u-slider').then(rect => {
+				this.sliderRect = rect;
+			});
 			// 连续触摸的过程会一直触发本方法，但只有手指触发且移动了才被认为是拖动了，才发出事件
 			// 触摸后第一次移动已经将status设置为moving状态，故触摸第二次移动不会触发本事件
 			if (this.status == 'start') this.$emit('start');
@@ -162,7 +160,7 @@ export default {
 			this.newValue = (this.distanceX / this.sliderRect.width) * 100;
 			this.status = 'moving';
 			// 发出moving事件
-			this.$emit('moving');
+			this.$emit('moving', this.newValue);
 			this.updateValue(this.newValue, true);
 		},
 		onTouchEnd() {
@@ -195,11 +193,17 @@ export default {
 			// 将小数变成整数，为了减少对视图的更新，造成视图层与逻辑层的阻塞
 			return Math.round(Math.max(this.min, Math.min(value, this.max)) / this.step) * this.step;
 		},
-		onClick(event) {
+		async onClick(event) {
 			if (this.disabled) return;
+			// 获取滑块条的尺寸信息
+			await this.$uGetRect('.u-slider').then(rect => {
+				this.sliderRect = rect;
+			});
 			// 直接点击滑块的情况，计算方式与onTouchMove方法相同
 			const value = ((event.detail.x - this.sliderRect.left) / this.sliderRect.width) * 100;
 			this.updateValue(value, false);
+			// 添加点击change事件
+			this.$emit('change', value);
 		}
 	}
 };

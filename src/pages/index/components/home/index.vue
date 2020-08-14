@@ -1,5 +1,5 @@
 <template>
-	<view class="home-container">
+	<scroll-view class="home-container">
 		<home-icons />
 		<home-apply
 			:dj="dj"
@@ -7,9 +7,11 @@
 		/>
 		<home-song-list
 			:songListNum="songListNum"
-			@reload="getUserInfo"
+      @listShow="list"
+      @songListShow="songlist"
+      @modelShow="model"
 		/>
-	</view>
+	</scroll-view>
 </template>
 <script>
 import HomeIcons from './HomeIcons'
@@ -41,6 +43,7 @@ export default {
         if (this.loginState) {
           this.getUserInfo()
           this.getAlbums()
+          this.getVideos()
         }
       },
       immediate: true
@@ -53,12 +56,29 @@ export default {
         }
       },
       immediate: true
+    },
+    loginState: {
+      handler (val, oldV) {
+        if (!val) {
+          this.songListNum.createNum = 0
+          this.songListNum.favoritesNum = 0
+        }
+      }
     }
   },
   computed: {
     ...mapGetters(['loginState'])
   },
   methods: {
+    list (data) {
+      this.$emit('list', data)
+    },
+    songlist (data) {
+      this.$emit('songlist', data)
+    },
+    model (data) {
+      this.$emit('model', data)
+    },
     // 获取用户信息
     getUserInfo () {
       userInfo()
@@ -72,26 +92,17 @@ export default {
           // 收藏的电台数
           this.dj = data.djRadioCount
         })
-        .catch(() => {
-          this.$toast('请求失败,请稍后尝试')
-        })
     },
     getAlbums () {
       favoriteAlbums()
         .then(data => {
           this.albumsCount = data.count
         })
-        .catch(() => {
-          this.$toast('获取专辑失败')
-        })
     },
     getVideos () {
       favoriteVideos()
         .then(data => {
           this.videosCount = data.count
-        })
-        .catch(() => {
-          this.$toast('获取视频失败')
         })
     }
   },
@@ -103,5 +114,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.home-container {
+  /* #ifdef APP-PLUS */
+	padding-top: var(--status-bar-height);
+  /* #endif */
+}
 </style>

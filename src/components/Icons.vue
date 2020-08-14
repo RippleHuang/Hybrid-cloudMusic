@@ -1,5 +1,5 @@
 <template>
-  <view class="icon-list" :class="[compile ? 'compile' : '']">
+  <view class="icon-list" :class="[compile ? 'compile' : '']" @tap="eventThing">
     <view class="icon-con">
       <text class="icon-size" :class="icons.icon"></text>
     </view>
@@ -16,7 +16,12 @@ export default {
     compile: {
       type: Boolean
     }
-  }
+  },
+  methods: {
+    eventThing () {
+      this.$emit('noAction')
+    }
+  },
 }
 </script>
 <style lang="scss" scopd>

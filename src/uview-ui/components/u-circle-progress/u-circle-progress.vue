@@ -1,30 +1,30 @@
 <template>
 	<view
 		class="u-circle-progress"
-		:style="{
+		:style="[{
 			width: widthPx + 'px',
 			height: widthPx + 'px',
 			backgroundColor: bgColor
-		}"
+		}]"
 	>
 		<!-- 支付宝小程序不支持canvas-id属性，必须用id属性 -->
 		<canvas
 			class="u-canvas-bg"
 			:canvas-id="elBgId"
 			:id="elBgId"
-			:style="{
+			:style="[{
 				width: widthPx + 'px',
 				height: widthPx + 'px'
-			}"
+			}]"
 		></canvas>
 		<canvas
 			class="u-canvas"
 			:canvas-id="elId"
 			:id="elId"
-			:style="{
+			:style="[{
 				width: widthPx + 'px',
 				height: widthPx + 'px'
-			}"
+			}]"
 		></canvas>
 		<slot></slot>
 	</view>
@@ -108,7 +108,8 @@ export default {
 			startAngle: -Math.PI / 2, // canvas画圆的起始角度，默认为3点钟方向，定位到12点钟方向
 			progressContext: null, // 活动圆的canvas上下文
 			newPercent: 0, // 当动态修改进度值的时候，保存进度值的变化前后值，用于比较用
-			oldPercent: 0 // 当动态修改进度值的时候，保存进度值的变化前后值，用于比较用
+			oldPercent: 0, // 当动态修改进度值的时候，保存进度值的变化前后值，用于比较用
+			timer: null
 		};
 	},
 	watch: {
@@ -118,17 +119,28 @@ export default {
 			// 此值其实等于this.percent，命名一个新
 			this.newPercent = nVal;
 			this.oldPercent = oVal;
-			setTimeout(() => {
+			if (this.timer) {
+				clearTimeout(this.timer)
+			}
+			this.timer = setTimeout(() => {
 				// 无论是百分比值增加还是减少，需要操作还是原来的旧的百分比值
 				// 将此值减少或者新增到新的百分比值
 				this.drawCircleByProgress(oVal);
 			}, 50);
 		}
 	},
-	created() {
+	mounted() {
 		// 赋值，用于加载后第一个画圆使用
 		this.newPercent = this.percent;
 		this.oldPercent = 0;
+		// 在h5端，必须要做一点延时才起作用，this.$nextTick()无效(HX2.4.7)
+		if (this.timer) {
+			clearTimeout(this.timer)
+		}
+		this.timer = setTimeout(() => {
+			this.drawProgressBg();
+			this.drawCircleByProgress(this.oldPercent);
+		}, 50);
 	},
 	computed: {
 		// 有type主题时，优先起作用
@@ -136,13 +148,6 @@ export default {
 			if (['success', 'error', 'info', 'primary', 'warning'].indexOf(this.type) >= 0) return this.$u.color[this.type];
 			else return this.activeColor;
 		}
-	},
-	mounted() {
-		// 在h5端，必须要做一点延时才起作用，this.$nextTick()无效(HX2.4.7)
-		setTimeout(() => {
-			this.drawProgressBg();
-			this.drawCircleByProgress(this.oldPercent);
-		}, 50);
 	},
 	methods: {
 		drawProgressBg() {

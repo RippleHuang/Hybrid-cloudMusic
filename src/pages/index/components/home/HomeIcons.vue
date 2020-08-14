@@ -7,7 +7,7 @@
       :key="index"
       :compile="index === 14"
       class="home-icon-list"
-      @tap.native="noAction"
+      @noAction="noAction"
     >
     </icons>
   </scroll-view>
@@ -30,7 +30,7 @@ export default {
       this.HomeIcons = HomeIcons()
     },
     noAction () {
-      this.$toast('该功能尚未实装,敬请期待')
+      uni.showToast({title:'该功能尚未实装,敬请期待', icon: 'none'})
     }
   },
   components: {

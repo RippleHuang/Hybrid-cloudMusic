@@ -1,5 +1,5 @@
 <template>
-  <view class="popup-container">
+  <scroll-view scroll-y class="popup-container">
     <!-- 头部 -->
     <view class="header">
       <view class="mask"></view>
@@ -66,8 +66,15 @@
         <text class="icon-name">{{item.text}}</text>
       </view>
     </view>
-    <u-modal v-model="showModel" :mask-close-able="true" content="确认退出当前账号？" @confirm="out"></u-modal>
-  </view>
+    <u-modal
+      v-model="showModel"
+      show-cancel-button
+      content="确认退出当前账号？"
+      @cancel="showDialog = false"
+      @confirm="loginOut"
+    >
+    </u-modal>
+  </scroll-view>
 </template>
 <script>
 import { PopupTopIcons, PopupShopIcons, PopupAppIcons, PopupBottomIcons } from '@/common/icons'
@@ -118,7 +125,7 @@ export default {
       if (this.$store.state.loginState) this.showModel = true
       else this.toast('您暂未登录')
     },
-    out () {
+    loginOut () {
       logout()
         .then(data => {
           if (data.code === 200) {
@@ -129,7 +136,11 @@ export default {
             this.$store.commit('LOGIN_OUT')
             // 跳转到登录页,并显示体验按
             uni.setStorageSync('login', 'login')
-            this.$router.push('/login')
+            uni.navigateTo({
+              url: '../loginIndex/LoginIndex',
+              animationType: 'pop-in',
+              animationDuration: 200
+            })
             uni.setStorageSync('phoneNumber', phone)
             uni.setStorageSync('signIn', signIn)
             uni.setStorageSync('keywords', keywords)
@@ -147,6 +158,8 @@ $popupIcon: 38rpx;
 $liHeight: 100rpx;
 .popup-container {
   width: $width*0.8;
+  height: 92vh;
+  overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {

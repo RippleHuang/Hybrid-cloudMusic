@@ -1,12 +1,12 @@
 <template>
-  <view class="song-list">
+  <view class="song-list"  @tap="eventThing">
     <view class="left">
       <!-- 歌单 -->
       <view class="list-cover" v-if="!songShow">
         <!-- 图片地址加上 ?param=数字y数字 可以控制尺寸 -->
         <image :src="coverImgUrl + '?param=80y80'" alt="" />
         <view v-if="privacy !== 0" class="mask"></view>
-        <text :style="[{ bottom: `${bottom}rem` }]" class="iconfont icon-icon-system-fn-lock" v-if="privacy !== 0"></text>
+        <text :style="[{ bottom: `${bottom*50}px` }]" class="iconfont icon-icon-system-fn-lock" v-if="privacy !== 0"></text>
       </view>
       <!-- 歌曲 -->
       <view class="list-cover" :class="[{'number-show': number, imge: coverImgUrl}]" v-if="songShow">
@@ -23,14 +23,13 @@
         >
           {{myLove ? '我喜欢的音乐': name}}
         </text>
-        <text class="list-num u-line-1">
+        <text class="list-num u-line-1" :style="[{width: userInfo ? '75vw' : myLove ? '150px' : '240px'}]">
           <!-- 专辑,歌单 -->
           <text class="artist" v-for="(item, index) in artists" :key="index">{{item.name}}</text>
-          {{trackCount}}首
-          <text v-if="publishTime">{{publishTime | format}}</text>
-          <text v-if="creatorNickname">，by {{creatorNickname}}</text>
-          <text v-if="playCount === 0">，播放0次</text>
-          <text v-if="playCount">，播放{{playCount | filterPlayCountInfo }}次</text>
+          <text>{{trackCount}}首</text>
+          <text class="text" v-if="publishTime">{{publishTime | format}}</text>
+          <text class="text" v-if="creatorNickname">，by{{creatorNickname}}</text>
+          <text class="text" v-if="playCount > 0">，播放{{playCount | filterPlayCountInfo }}次</text>
         </text>
       </view>
       <!-- 歌曲 -->
@@ -116,7 +115,7 @@ export default {
       type: Number
     },
     // 歌单id
-    id: {
+    songListId: {
       type: Number
     },
     // 歌曲
@@ -152,20 +151,20 @@ export default {
     }
   },
   methods: {
+    eventThing () {
+      this.$emit('eventThing')
+    },
     // 返回一个随机数
     randomNum (min, max) {
       return parseInt(Math.random() * (max - min + 1) + min, 10)
     },
     heartMode () {
-      playlistDetail(this.id)
+      playlistDetail(this.songListId)
         .then(data => {
           const arr = data.playlist.trackIds
           const index = this.randomNum(0, arr.length)
           const item = arr[index]
-          this.startHeartMode(item.id, this.id)
-        })
-        .catch(() => {
-          this.$toast('获取失败')
+          this.startHeartMode(item.id, this.songListId)
         })
     },
     // 开启心动模式
@@ -175,9 +174,6 @@ export default {
           this.ruleModeList(data.data, 'songInfo')
           this.$store.dispatch('startPlayAll', { list: this.heartModeList })
         })
-        .catch(() => {
-          this.$toast('请求失败,请稍后尝试')
-        })
     },
     // 对请求到的心动模式数据进行修改，使得可以播放
     ruleModeList (arr, item) {
@@ -185,12 +181,18 @@ export default {
         this.heartModeList.push(ele[item])
       })
     },
+    toast (title) {
+      uni.showToast({
+        title,
+        icon: 'none'
+      })
+    },
     playSong () {
       this.$emit('playSong')
     },
     showAction () {
       this.$emit('showAction', {
-        id: this.id,
+        id: this.songListId,
         name: this.name,
         description: this.description,
         noCompile: this.noCompile
@@ -200,11 +202,11 @@ export default {
       if (this.$store.state.loginState) {
         this.$emit('addSong', { songid: this.songid, name: this.name })
       } else {
-        this.$toast('需要登录')
+        this.toast('需要登录')
       }
     },
     no () {
-      this.$toast('该功能尚未实装,敬请期待')
+      this.toast('该功能尚未实装,敬请期待')
     }
   },
   filters: {
@@ -263,6 +265,9 @@ $imgWidth: 100rpx;
 }
 .list-num {
   padding-bottom: 1rpx;
+  .text {
+    margin-left: 4rpx;
+  }
 }
 // 歌曲
 .list-info {
@@ -303,7 +308,7 @@ $imgWidth: 100rpx;
     height: $imgWidth*0.5;
     line-height: $imgWidth*0.5;
     padding: 0 $imgWidth*0.1;
-    font-size: 32rpx;
+    font-size: 24rpx;
     color: black;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, .1);
@@ -312,7 +317,7 @@ $imgWidth: 100rpx;
       margin-right: 1rpx;
     }
     &:active {
-      border: none;
+      background-color: rgba(0, 0, 0, .1);
     }
   }
   .icon-sandian {
@@ -331,9 +336,9 @@ $imgWidth: 100rpx;
   text-align: center;
 }
 .imge {
-  width: $imgWidth*0.8;
-  height: $imgWidth*0.8;
+  width: $height;
+  height: $imgWidth;
   text-align: center;
-  line-height: $imgWidth*0.8;
+  line-height: $imgWidth;
 }
 </style>

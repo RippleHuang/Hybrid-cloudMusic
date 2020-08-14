@@ -34,6 +34,9 @@ export default {
       bannerSwiper()
         .then(data => {
           this.swiperList = data.banners
+          this.swiperList.forEach(item => {
+            item.pic += '?param=400y150'
+          })
         })
     },
     change (index) {

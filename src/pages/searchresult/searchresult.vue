@@ -24,7 +24,6 @@
       <swiper
         class="tabs-swiper"
         :current="swiperActive"
-        @transition="transition"
         @animationfinish="animationfinish"
         :style="[{display: !loading ? 'block' : 'none'}]"
       >
@@ -51,7 +50,7 @@
                 :number="index+1"
                 :active="item.id === audioIngSong.id"
                 :artists="item.artists"
-                :albumName="(item.album || {}).name"
+                :albumName="item.album.name"
                 :name="item.name"
                 :privacy="0"
                 home
@@ -65,7 +64,7 @@
         <swiper-item class="tab-swiper-item">
           <scroll-view scroll-y class="scroll-down" @scrolltolower="pullDown">
             <video-list
-              :data="searchData[2].data"
+              :videoData="searchData[2].data"
               search
             />
             <text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
@@ -75,7 +74,7 @@
         <swiper-item class="tab-swiper-item">
           <scroll-view scroll-y class="scroll-down" @scrolltolower="pullDown">
             <artists-or-user
-              :data="searchData[3].data"
+              :otherData="searchData[3].data"
               songer
             />
             <text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
@@ -92,8 +91,8 @@
               :trackCount="item.size"
               :publishTime="item.publishTime"
               :privacy="0"
-              :id="item.id"
-              @tap.native="$router.push(`/showsong?dishId=${item.id}`)"
+              :songListId="item.id"
+              @eventThing="goSongShow(item.id, 'dishId')"
             />
             <text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
           </scroll-view>
@@ -106,11 +105,11 @@
               :coverImgUrl="item.coverImgUrl"
               :name="item.name"
               :trackCount="item.trackCount"
-              :creatorNickname="(item.creator || {}).nickname"
+              :creatorNickname="item.creator.nickname"
               userInfo
               :privacy="0"
               :playCount="item.playCount"
-              @tap.native="$router.push(`/showsong?albumId=${item.id}`)"
+              @eventThing="goSongShow(item.id, 'albumId')"
             />
             <text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
           </scroll-view>
@@ -119,7 +118,7 @@
         <swiper-item class="tab-swiper-item">
           <scroll-view scroll-y class="scroll-down" @scrolltolower="pullDown">
             <artists-or-user
-              :data="searchData[6].data"
+              :otherData="searchData[6].data"
               user
             />
             <text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
@@ -127,7 +126,7 @@
         </swiper-item>
       </swiper>
       <!-- 下拉加载 -->
-      <loading :height="0.5" :style="[{display: reload ? 'flex' : 'none'}, {bottom: '0'}]"/>
+      <loading :height="0.8" :style="[{display: reload ? 'flex' : 'none', bottom: '0px', position: 'fixed'}]"/>
     </view>
   </view>
 </template>
@@ -200,8 +199,6 @@ export default {
         this.list = []
         // 请求第一页数据
         if (this.searchData[val].data.length === 0) {
-          // 到达顶部
-          window.scrollTo(0, 0)
           this.loading = true
           this.getSearch(this.keyword, 0, this.searchData[this.active].type)
         }
@@ -211,29 +208,21 @@ export default {
       // 搜索词变化需要清空上一次结果
       for (let index = 0; index <= 6; index++) {
         this.searchData[index].data = []
-        this.searchData[index].sum = -1
+        this.searchData[index].sum = 0
       }
     }
-    // '$route.query.text': {
-    //   handler (val, oldV) {
-    //     if (val) {
-    //       this.searchResult(val)
-    //     }
-    //   }
-    // }
   },
   methods: {
-    a (e) {
-      console.log(e)
+    goSongShow (id, type) {
+      uni.navigateTo({
+				url: `../showsong/showSongList?${type}=${id}`,
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
     },
 		tabsChange(index) {
 			this.swiperActive = index
-		},
-		// swiper-item左右移动，通知tabs的滑块跟随移动
-		transition(e) {
-			let dx = e.detail.dx
-			this.$refs.searchTabs.setDx(dx)
-		},
+    },
 		// 由于swiper的内部机制问题，快速切换swiper不会触发dx的连续变化，需要在结束时重置状态
 		// swiper滑动结束，分别设置tabs和swiper的状态
 		animationfinish(e) {
@@ -292,11 +281,10 @@ export default {
       })
     },
     pullDown () {
-      console.log('a')
       if (this.active !== 0) {
         this.reload = true
         this.searchData[this.active].sum++
-        // 推荐歌单以及其他分类
+        // 歌单以及其他分类
         const keyword = this.keyword ? this.keyword : this.$route.query.text
         this.getSearch(keyword, this.searchData[this.active].sum * 30, this.searchData[this.active].type)
       }
@@ -315,6 +303,9 @@ export default {
 <style lang='scss' scoped>
 .search-tabs {
   height: calc(100vh - 60px);
+  /*  #ifdef MP  */
+  margin-top: -1px;
+  /*  #endif  */
   padding-top: $height;
   box-sizing: border-box;
   .tabs-swiper {
@@ -333,9 +324,9 @@ export default {
     }
   }
 }
-.finished {
-  justify-content: center;
-  font-size: 32rpx;
+.tab-swiper-item {
+  padding-top: 3px;
+  box-sizing: border-box;
 }
 </style>
 

@@ -9,6 +9,7 @@
         v-show="typeStr === 'plate'"
         class="title-btn"
         plain
+        @tap="goPlate"
       >
         更多新碟
       </button>
@@ -16,6 +17,7 @@
         v-show="typeStr === 'newSong'"
         class="title-btn"
         plain
+        @tap="goNewSong"
       >
         新歌推荐
       </button>
@@ -27,7 +29,7 @@
           :key="index"
           :url="item.picUrl"
           :songtitle="item.name"
-          @tap="$router.push(`/showsong?dishId=${item.id}`)"
+          @goPage="goSongShow(item.id)"
         />
       </view>
       <view class="images-con" :style="[{display: typeStr==='newSong' ? 'flex' : 'none'}]">
@@ -37,7 +39,7 @@
           :url="item.song.album.blurPicUrl"
           :songtitle="item.song.name"
           :newPlatetype="typeStr"
-          @tap="$store.dispatch('addToAudioList', item.song)"
+          @goPage="$store.dispatch('addToAudioList', item.song)"
           @loadingImg="loadingImg"
         />
       </view>
@@ -64,6 +66,13 @@ export default {
     await this.getNewSongs()
   },
   methods: {
+    goSongShow (id) {
+      uni.navigateTo({
+				url: `../showsong/showSongList?dishId=${id}`,
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
+    },
     getNewDish () {
       const limit = 10
       newDish(limit)
@@ -77,6 +86,20 @@ export default {
         .then(data => {
           this.newSongsList = getRandomNumberArray(data.result, 3)
         })
+    },
+    goPlate () {
+      uni.navigateTo({
+				url: '../moreNewPlate/MoreNewPlate',
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
+    },
+    goNewSong () {
+      uni.navigateTo({
+				url: '../newSongs/NewSongs',
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
     },
     loadingImg (data) {
       this.$nextTick(() => {

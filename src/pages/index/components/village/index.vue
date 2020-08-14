@@ -29,13 +29,19 @@
         </view>
 			</swiper-item>
 			<swiper-item class="tab-swiper-item">
-				<scroll-view class="village-event" @scrolltolower="onLoad" v-if="$store.state.loginState">
-					<!-- <dynamic-card
+				<view class="village-event" v-if="$store.state.loginState">
+          <loading :height="6.58" :style="[{display: !loading ? 'flex' : 'none'}]" />
+					<dynamic-card
 						:dataMsg="eventAll"
 						:loading="loading"
-					/> -->
-					动态
-        </scroll-view>
+					/>
+          <!-- 加载更多 -->
+          <view class="more on-touch" @tap="pullDown">
+            <text :style="[{display: !reload ? 'flex' : 'none'}]">展开更多动态</text>
+            <loading :height="0.8" :style="[{display: reload ? 'flex' : 'none'}]"/>
+          </view>
+          <text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
+        </view>
         <view class="empty" v-else>
           <text class="iconfont icon-kong"></text>
           <text>需要登录</text>
@@ -47,7 +53,7 @@
 <script>
 import VillageCard from './VillageCard'
 import Loading from '@/components/Loading'
-// import DynamicCard from 'components/DynamicCard'
+import DynamicCard from '@/components/DynamicCard'
 import { hotwallVillage, eventVillage } from '@/api/apis'
 export default {
   name: 'VillageIndex',
@@ -75,6 +81,11 @@ export default {
   },
   created () {
     this.getHotwallVillage()
+  },
+  watch: {
+    current (val, oldV) {
+      if (val === 1 && this.event.length === 0) this.getEventVillage(0)
+    }
   },
   methods: {
 		tabsChange(index) {
@@ -109,7 +120,7 @@ export default {
           this.event = data.event
           this.lasttime = data.lasttime
           // 没有数据时停止
-          if (this.event.length === 0) {
+          if (!data.more) {
             this.finished = true
             this.loading = true
             this.reload = false
@@ -121,15 +132,17 @@ export default {
     division () {
       this.eventAll.push(...this.event)
       this.$nextTick(() => {
-        // reload 需要放在$nextTick中
         this.loading = true
         // 加载状态结束
         this.reload = false
       })
     },
-    onLoad () {
+    pullDown () {
       if (this.$store.state.loginState) {
-        this.getEventVillage(this.lasttime)
+        if (!this.finished) {
+          this.reload = true
+          this.getEventVillage(this.lasttime)
+        }
       } else {
         uni.showToast({
 					title: '需要登录',
@@ -140,12 +153,20 @@ export default {
   },
   components: {
     VillageCard,
-    Loading
-    // DynamicCard
+    Loading,
+    DynamicCard
   }
 }
 </script>
 <style lang="scss" scoped>
+.village-event {
+  position: relative;
+  padding-top: 80rpx;
+  /* #ifdef APP-PLUS */
+  padding-top: $height*0.8;
+  /* #endif */
+  box-sizing: border-box;
+}
 // 两竖列
 .card-box {
   position: relative;
@@ -155,8 +176,24 @@ export default {
   flex-wrap: wrap;
   width: $width*0.928;
 	margin: 0 auto;
-	padding-top: $height*0.8;
+  padding-top: $height*0.8;
+  /* #ifdef APP-PLUS */
+  padding-top: calc(48px + var(--status-bar-height));
+  /* #endif */
+
   // 不兼容
   // column-count: 2;
+}
+.more {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  width: $width;
+  height: 100rpx;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
 }
 </style>

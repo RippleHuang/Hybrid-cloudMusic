@@ -1,20 +1,22 @@
 <template>
-  <view class="song-list van-hairline--top">
-    <view class="song-list-header">
-      <text class="title">推荐歌单</text>
-      <button class="title-btn" plain @tap="$router.push('/songlistsquare')">歌单广场</button>
+  <scroll-view>
+    <view class="song-list">
+      <view class="song-list-header">
+        <text class="title">推荐歌单</text>
+        <button class="title-btn" plain @tap="goShowList">歌单广场</button>
+      </view>
+      <view class="song-list-con">
+        <img-card
+          v-for="(item, index) in songList"
+          :key="index"
+          :url="item.picUrl || item.coverImgUrl"
+          :songtitle="item.name"
+          :playCount="item.playCount"
+          @goPage="goSongShow(item.id)"
+        />
+      </view>
     </view>
-    <view class="song-list-con">
-      <img-card
-        v-for="(item, index) in songList"
-        :key="index"
-        :url="item.picUrl || item.coverImgUrl"
-        :songtitle="item.name"
-        :playCount="item.playCount"
-        @tap.native="$router.push(`/showsong?albumId=${item.id}`)"
-      />
-    </view>
-  </view>
+  </scroll-view>
 </template>
 <script>
 import ImgCard from '@/components/ImgCard'
@@ -28,6 +30,22 @@ export default {
   data () {
     return {
       opacity: 0
+    }
+  },
+  methods: {
+    goSongShow (id) {
+      uni.navigateTo({
+				url: `../showsong/showSongList?albumId=${id}`,
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
+    },
+    goShowList () {
+      uni.navigateTo({
+				url: '../songListSquare/SongListSquare',
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
     }
   },
   components: {

@@ -2,7 +2,7 @@
   <view class="artists">
     <view
       class="artists-for on-touch"
-      v-for="(item, index) in data" :key="index"
+      v-for="(item, index) in otherData" :key="index"
       @tap="goUserInfo(item.userId)"
     >
       <view class="img-info">
@@ -12,7 +12,7 @@
         <view class="name">
           <view class="u-line-1">
             {{ item.name || item.nickname }}
-            <text v-if="(item.alias || []).length > 0">({{item.alias[0]}})</text>
+            <text v-if="item.alias != null">({{item.alias[0]}})</text>
           </view>
           <text class="iconfont icon-nan" style="color: #6eccff;" v-if="item.gender === 1"></text>
           <text class="iconfont icon-nv" style="color: #fd79a8;" v-if="item.gender === 2"></text>
@@ -42,8 +42,8 @@
 export default {
   name: 'ArtistsOrUser',
   props: {
-    data: {
-      type: Array
+    otherData: {
+      type: [Object, Array]
     },
     user: {
       type: Boolean
@@ -64,7 +64,13 @@ export default {
     },
     goUserInfo (id) {
       if (this.user) {
-        if (this.$store.state.loginState) this.$router.push('/userinfo?accountUid=' + id)
+        if (this.$store.state.loginState) {
+          uni.navigateTo({
+            url: '../userInfo/userInfo?accountUid=' + id,
+            animationType: 'pop-in',
+            animationDuration: 200
+          })
+        }
         else this.toast('需要登录')
       } else {
         this.toast('尚未实装,敬请期待')

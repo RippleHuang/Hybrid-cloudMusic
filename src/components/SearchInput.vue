@@ -10,20 +10,19 @@
       <input
         class="search-text"
         type="text"
-        :placeholder="placeholder"
         v-model="search"
+        :placeholder="placeholder"
         @input="getResult"
         @focus="getResult"
-        :focus="focus"
-        placeholder-class="placeholder-style"
+        placeholder-style="color: #eee;font-size: 18px;font-weight: bold;"
         :style="[{'border-color': borderColor}]"
-      >
-      <text @tap="clear" class="iconfont icon-chahao" :style="[{display: search ? 'block' : 'none'}]"></text>
+      />
+      <text @tap.stop="clearSearch" class="iconfont icon-chahao" :style="[{display: search ? 'block' : 'none'}]"></text>
     </view>
     <view class="mask" @tap="show = false" :style="[{display: show ? 'block':'none'}]"></view>
     <!-- 搜索建议列表信息 -->
     <view class="search-list" :style="[{display: show ? 'block':'none'}]">
-      <view class="van-ellipsis on-touch" @tap="searchShow(search)"><text class="text">搜索 "{{ search }}"</text></view>
+      <view class="van-ellipsis on-touch" @tap="searchShow(search)"><text class="text">搜索{{`"${search}"`}}</text></view>
       <view
         class="van-ellipsis on-touch"
         v-for="(item, index) in searchList" :key="index"
@@ -88,8 +87,9 @@ export default {
         animationType: 'pop-out',
         animationDuration: 200
       })
+      this.show = false
     },
-    clear () {
+    clearSearch () {
       this.search = ''
     },
     // 进入页面获取默认提示
@@ -106,11 +106,11 @@ export default {
           this.searchList = data.result.allMatch
         })
     },
-    getResult () {
+    getResult (e) {
+      // 去除前后空格
+      this.search = this.search.replace(/^[\s*]|[\s*]$/g, '')
       // 不为空搜索
       if (this.search) {
-        // 去除前后空格
-        this.search = this.search.replace(/^[\s*]|[\s*]$/g, '')
         this.debounce(this.getSuggestSearch(this.search), 100)
         // 显示列表
         this.show = true
@@ -133,6 +133,7 @@ export default {
     searchShow (keyword) {
       this.$store.commit('SET_HISTORY', keyword) // 保存历史
       this.search = keyword
+      this.show = false
       if (!this.text) {
         uni.navigateTo({
           url: `../searchresult/searchresult?search=searchResult&text=${keyword}`,
@@ -155,6 +156,9 @@ export default {
   z-index: 5;
   width: $width;
   height: $height;
+  /* #ifdef APP-PLUS */
+  padding-top: calc(var(--status-bar-height) / 2);
+  /* #endif */
   background-color: $defaultColor;
   .rollback {
     display: flex;
@@ -184,15 +188,10 @@ export default {
       caret-color: #fff;
       background-color: $defaultColor;
       border-bottom: 1rpx solid #ddd;
-      // placeholder样式
-      .placeholder-style {
-        color:rgba(255, 255, 255, .9);
-        font-size: 27rpx;
-        font-weight: bold;
-      }
     }
     .icon-chahao {
       position: absolute;
+      z-index: 10;
       right: 25rpx;
       bottom: 35rpx;
       display: none;

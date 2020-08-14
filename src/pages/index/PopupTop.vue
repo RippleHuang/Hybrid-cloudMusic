@@ -7,7 +7,7 @@
       <button class="title-btn" plain @tap="toPass">立即登录</button>
     </view>
     <!-- 已登录 -->
-    <view class="logining" v-if="loginState" @tap="$router.push(`/userInfo?accountUid=${accountUid}`)">
+    <view class="logining" v-if="loginState" @tap="userInfo">
       <view class="left-con">
         <image class="account-bgi" :src="avatarUrl" alt />
         <view class="information">
@@ -21,19 +21,19 @@
           class="sign"
           plain
           @tap.stop="signInClick"
-          :class="!signIn ? 'show-block' : ''"
+          :class="!signIn ? 'show-inline' : ''"
         >
           <text class="iconfont icon-tubiaozhizuo-"></text>签到
         </button>
-        <botton
+        <button
           class="signin"
           plain
-          :class="signIn ? 'show-block' : ''"
+          :class="signIn ? 'show-inline' : ''"
           @tap.stop="signInClick"
         >
           已签到
           <text class="iconfont icon-arrow-right"></text>
-        </botton>
+        </button>
       </view>
     </view>
   </view>
@@ -71,7 +71,18 @@ export default {
   methods: {
     toPass () {
       // 默认有体验按钮
-      this.$router.push({ path: '/login', query: { login: uni.getStorageSync('login') || 'login' } })
+      uni.setStorageSync('login', 'login')
+      uni.navigateTo({
+        url: '../loginIndex/LoginIndex',
+        animationType: 'pop-in',
+        animationDuration: 200
+      })
+    },
+    toast (title) {
+      uni.showToast({
+        title,
+        icon: 'none'
+      })
     },
     // 确定是否签到
     getSign () {
@@ -102,7 +113,11 @@ export default {
     },
     // 用户信息页
     userInfo () {
-      this.$router.push('/userInfo')
+      uni.navigateTo({
+        url: '../userInfo/userInfo?accountUid=' + this.accountUid,
+        animationType: 'pop-in',
+        animationDuration: 200
+      })
     },
     // 保存最后签到时间
     setSignIn () {
@@ -140,16 +155,16 @@ export default {
         .then(() => {
           this.setSignIn()
           if (this.signIn) {
-            this.$toast('今天已签到')
+            this.toast('今天已签到')
           } else {
-            this.$toast('签到成功')
+            this.toast('签到成功')
             this.signIn = true
           }
         })
         .catch(() => {
           this.setSignIn()
           this.signIn = true
-          this.$toast('今天已签到')
+          this.toast('今天已签到')
         })
     }
   }
@@ -241,14 +256,20 @@ export default {
       // 签到按钮
       .sign {
         display: none;
-        width: 100rpx;
+        width: 140rpx;
         height: 45rpx;
         line-height: 45rpx;
         text-align: center;
         font-size: 21rpx;
+        border: none;
         color: #fff;
         border-radius: 40rpx;
-        background-color: #dd001b;
+        background-color: $defaultColor;
+        &:active {
+          border: none;
+          color: #fff;
+          background-color: rgba(0, 0, 0, .1);
+        }
         text {
           font-size: 20rpx;
         }
@@ -256,8 +277,9 @@ export default {
       // 已签到按钮
       .signin {
         display: none;
-        width: 130rpx;
+        width: 140rpx;
         height: 48rpx;
+        padding: 0;
         line-height: 48rpx;
         text-align: center;
         font-size: 20rpx;

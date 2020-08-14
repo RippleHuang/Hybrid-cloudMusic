@@ -53,6 +53,7 @@
     "@dcloudio/uni-quickapp-webview": "^2.0.0-28320200727001",
     "@dcloudio/uni-stat": "^2.0.0-28320200727001",
     "core-js": "^3.6.5",
+    "crypto-js": "^4.0.0",
     "flyio": "^0.6.2",
     "regenerator-runtime": "^0.12.1",
     "sass-loader": "^9.0.2",

@@ -64,11 +64,6 @@ class Request {
 						}
 					} else {
 						// 不返回原始数据的情况下，服务器状态码不为200，modal弹框提示
-						if(response.errMsg) {
-							uni.showModal({
-								title: response.errMsg
-							});
-						}
 						reject(response)
 					}
 				}
@@ -83,10 +78,6 @@ class Request {
 			// 而没有清除前者的定时器，导致前者超时，一直显示loading
 			if(this.config.showLoading && !this.config.timer) {
 				this.config.timer = setTimeout(() => {
-					uni.showLoading({
-						title: this.config.loadingText,
-						mask: this.config.loadingMask
-					})
 					this.config.timer = null;
 				}, this.config.loadingTime);
 			}

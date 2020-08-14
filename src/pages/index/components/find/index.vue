@@ -1,10 +1,10 @@
 <template>
-  <scroll-view scroll-y class="find-page">
+  <view class="find-page">
 		<SwiperImage />
 		<findIcons />
 		<song-list :songList="songList" />
     <new-plate />
-	</scroll-view>
+	</view>
 </template>
 <script>
 import SwiperImage from './Swiper'
@@ -15,24 +15,35 @@ import { recSongList, loginRecSongList } from '@/api/apis'
 import { getRandomNumberArray } from '@/common/randomNumberArray'
 export default {
   name: 'FindIndex',
+  props: {
+    refresh: {
+      type: Number
+    }
+  },
   data () {
     return {
-      isLoading: false,
       songList: []
     }
   },
   created () {
-		// this.judge()
-		this.getSongList()
+    this.judge()
+  },
+  watch: {
+    refresh (val, oldV) {
+      this.judge()
+      this.toast('以为你推荐新的内容')
+    }
   },
   methods: {
-    // 刷新
-    onRefresh () {
-      this.judge()
+    toast (title) {
+      uni.showToast({
+        title,
+        icon: 'none'
+      })
     },
     // 判断请求什么数据
     judge () {
-      if (this.loginState) {
+      if (this.$store.state.loginState) {
         this.getRecSong()
       } else {
         this.getSongList()
@@ -45,20 +56,13 @@ export default {
       recSongList(limit)
         .then(data => {
           this.songList = getRandomNumberArray(data.playlists, 6)
-          this.$nextTick(() => {
-            this.isLoading = false
-          })
 				})
-			console.log('a')
     },
     // 已登录
     getRecSong () {
       loginRecSongList()
         .then(data => {
           this.songList = getRandomNumberArray(data.recommend, 6)
-          this.$nextTick(() => {
-            this.isLoading = false
-          })
         })
     }
   },
@@ -71,5 +75,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.find-page {
+  /* #ifdef APP-PLUS */
+	padding-top: var(--status-bar-height);
+  /* #endif */
+}
 </style>

@@ -37,44 +37,57 @@ export default {
     }
   },
   methods: {
+    toast (title) {
+      uni.showToast({
+        title,
+        icon: 'none'
+      })
+    },
     forEvent (event) {
       this[event]()
     },
     // 循环出来的事件
     no () {
-      this.$toast('创建新歌单,编辑歌单信息,删除可用,其他功能尚未实装')
+      this.toast('创建新歌单,编辑歌单信息,删除可用,其他功能尚未实装')
     },
     noAction () {
-      this.$toast('我的电台,我的收藏,其他功能尚未实装')
+      this.toast('我的电台,我的收藏,其他功能尚未实装')
     },
     createList () {
       this.$emit('createSongList')
     },
     compile () {
-      this.$router.push({
-        name: 'compilesonglist',
-        params: {
-          id: this.uid,
-          title: this.title,
-          description: this.description ? this.description : ''
-        }
-      })
+      const { uid, title, description } = this
+      const des = description != null ? description : ''
+      uni.navigateTo({
+				url: `../compileSongList/CompileSongList?id=${uid}&title=${title}&description=${des}`,
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
     },
     delete () {
       this.$emit('deleteSongList')
     },
     goMyRadio () {
       if (this.$store.state.loginState) {
-        this.$router.push('/myradio')
+        uni.navigateTo({
+          url: '../myRadio/MyRadio',
+          animationType: 'pop-in',
+          animationDuration: 200
+        })
       } else {
-        this.$toast('需要登录')
+        this.toast('需要登录')
       }
     },
     goMyFavorite () {
       if (this.$store.state.loginState) {
-        this.$router.push('/myfavorite')
+        uni.navigateTo({
+          url: '../myFavorite/MyFavorite',
+          animationType: 'pop-in',
+          animationDuration: 200
+        })
       } else {
-        this.$toast('需要登录')
+        this.toast('需要登录')
       }
     }
   }

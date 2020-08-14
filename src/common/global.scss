@@ -1,5 +1,5 @@
 // 隐藏滚动条
-html, body, .uni-scroll-view {
+html, body, .uni-scroll-view, .uni-scroll-view-content {
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
@@ -16,28 +16,57 @@ html, body, .uni-scroll-view {
 .hide {
   display: none !important;
 }
-// 云村,视频,搜索页面导航条
-.village {
-  .u-tabs {
-    position: fixed;
-  }
-  .u-tabs-scroll-box {
-    text-align: center;
-    .u-tabs-item {
-      &:active {
-        background-color: rgba(0, 0, 0, .1);
-      }
-    }
-    .u-scroll-bar {
-      margin-left: $width*0.29;
-    }
-  }
-}
-.video-index, .search-tabs {
+// 云村,视频,搜索等等页面的导航条
+.village, .recentplay-tabs, .listall-tabs {
   .u-tabs {
     position: fixed;
   }
   .u-tabs-item {
+    width: $width*0.5;
+    color: rgba(255, 255, 255, .95);
+    &:active {
+      background-color: rgba(0, 0, 0, .1);
+    }
+  }
+}
+.village, .video-index {
+  .u-tabs {
+    /* #ifdef APP-PLUS */
+    top: var(--status-bar-height);
+    /* #endif */
+  }
+}
+.video-index, .search-tabs, .songlist-tabs, .newsongs-tabs {
+  .u-tabs {
+    position: fixed;
+  }
+  .u-tabs-item {
+    color: rgba(255, 255, 255, .95);
+    &:active {
+      background-color: rgba(0, 0, 0, .1);
+    }
+  }
+}
+.user-tab {
+  .u-tabs {
+    position: sticky;
+    top: 0;
+  }
+  .u-tabs-item {
+    width: $width*0.5;
+    color: rgba(0, 0, 0, .95);
+    &:active {
+      background-color: rgba(0, 0, 0, .1);
+    }
+  }
+}
+.favorite-tabs {
+  .u-tabs {
+    position: fixed;
+  }
+  .u-tabs-item {
+    width: 80px;
+    color: rgba(255, 255, 255, .95);
     &:active {
       background-color: rgba(0, 0, 0, .1);
     }
@@ -90,6 +119,8 @@ html, body, .uni-scroll-view {
 }
 // 我的页面折叠面板
 .u-collapse-head {
+  width: $width;
+  height: 80rpx;
   padding: 0 !important;
 }
 // 歌单，歌曲样式
@@ -196,9 +227,17 @@ html, body, .uni-scroll-view {
 }
 // 可移动tab选项卡公共样式
 .tabs-swiper {
-	width: $width;
-	height: calc(100vh - 60px);
+  width: $width;
+  /*  #ifndef MP  */
+  height: calc(100vh - 60px);
+  /*  #endif  */
+  /*  #ifdef MP  */
+  height: calc(100vh - 66px);
+  margin-top: -1px;
+  /*  #endif  */
+  box-sizing: border-box;
 	.tab-swiper-item {
+    box-sizing: border-box;
 		overflow-y: scroll;
 		scrollbar-width: none;
 		-ms-overflow-style: none;
@@ -222,5 +261,90 @@ html, body, .uni-scroll-view {
     color: $defaultColor;
     font-size: 300rpx;
     -webkit-text-stroke: 4px #fff;
+  }
+}
+// 没有更多了
+.finished {
+  justify-content: center;
+  font-size: 32rpx;
+}
+// 迷你播放器留空
+.small-height {
+  padding-bottom: 100rpx;
+}
+// 滑块宽
+.u-slider {
+  width: $width*0.8;
+}
+// 迷你播放器圆形进度条
+.u-canvas {
+  &:active {
+    background-color: rgba(1, 1, 1, 0.1);
+  }
+}
+// 登录页公共样式
+.phone-login {
+  padding: 160rpx 50rpx 0;
+  box-sizing: border-box;
+  .phone-con {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: $height;
+    margin-top: 40rpx;
+    border-bottom: 1rpx solid rgba(163, 161, 161, 0.8);
+    .phone-num {
+      width: $width*0.85;
+      height: 55rpx;
+      font-size: 36rpx;
+      padding-left: 20rpx;
+      margin-top: 32rpx;
+      // 光标颜色
+      caret-color:#e60721;
+    }
+    // 清除按钮
+    .icon-chahao {
+      position: absolute;
+      right: 0;
+      bottom: 22rpx;
+      z-index: 10;
+      font-size: 46rpx;
+      color: rgba(163, 161, 161, 0.8);
+    }
+  }
+  .next {
+    width: 100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    margin-top: 100rpx;
+    color: #fff;
+    font-size: 35rpx;
+    font-weight: bold;
+    border-radius: 50rpx;
+    background-color: #e60721;
+    border: none;
+    &:active {
+      background-color: #c7182d;
+    }
+  }
+}
+// home页面model样式
+.content {
+  .u-model {
+    .u-checkbox {
+      padding-left: 30rpx;
+    }
+    [class*="u-border-bottom"]::after {
+      border: none;
+    }
+    [class*="u-border-top"]::after {
+      border: none;
+    }
+  }
+}
+// popup
+.popup-container {
+  .u-drawer-content, .u-drawer-visible, .u-drawer {
+    width: $width;
   }
 }

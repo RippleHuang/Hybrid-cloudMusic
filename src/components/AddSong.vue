@@ -1,12 +1,12 @@
 <template>
-  <div class="add-song">
+  <view class="add-song">
     <!-- 创建的歌单,不是自己的歌单 添加 -->
-    <div class="top">
-      <p class="title van-ellipsis">歌曲:{{name}}</p>
-      <p class="title">{{uid !== accountUid ? '添加到' : '删除'}}</p>
-    </div>
-    <ul class="song-group" v-if="uid !== accountUid">
-      <div class="action-sheet">
+    <view class="top">
+      <text class="title u-line-1">歌曲:{{name}}</text>
+      <text class="title">{{uid !== accountUid ? '添加到' : '删除'}}</text>
+    </view>
+    <view class="song-group" v-if="uid !== accountUid">
+      <scroll-view scroll-y class="action-sheet">
         <song-list-li
           v-for="(item, index) in createList" :key="index"
           :coverImgUrl="item.coverImgUrl"
@@ -14,21 +14,21 @@
           :trackCount="item.trackCount"
           :privacy="item.privacy"
           :description="item.description"
-          @click.native="addOrDelSongInList(item.id)"
+          @eventThing="addOrDelSongInList(item.id)"
         />
-      </div>
-    </ul>
+      </scroll-view>
+    </view>
     <!-- 是自己的歌单, 删除 -->
-    <p class="delete on-touch" @click="addOrDelSongInList" v-else>
-      <i class="iconfont icon-trash on-touch"></i>
+    <text class="delete on-touch" @tap="addOrDelSongInList" v-else>
+      <text class="iconfont icon-trash on-touch"></text>
       删除
-    </p>
-  </div>
+    </text>
+  </view>
 </template>
 <script>
-import { editSong } from 'api/apis'
+import { editSong } from '@/api/apis'
 import { mapGetters } from 'vuex'
-import SongListLi from 'components/SongListLi'
+import SongListLi from '@/components/SongListLi'
 export default {
   name: 'AddSong',
   props: {
@@ -59,13 +59,16 @@ export default {
       const pid = this.uid !== this.accountUid ? id : this.albumId
       editSong(addOrdel, pid, this.songid)
         .then(() => {
-          this.$emit('update:showActionSheet', false)
-          this.$toast(text)
+          this.$emit('showActionSheet', false)
+          uni.showToast({title: text, icon: 'none'})
           this.$store.commit('REFRESH') // 刷新
-          if (addOrdel === 'del') this.$router.go(-1)
-        })
-        .catch(() => {
-          this.$toast('添加歌曲失败')
+          if (addOrdel === 'del') {
+             uni.navigateBack({
+              delta: 1,
+              animationType: 'pop-out',
+              animationDuration: 200
+            })
+          }
         })
     }
   },
@@ -79,21 +82,21 @@ export default {
   .top {
     position: absolute;
     top: 0;
-    width: 100%;
-    height: 1rem;
-    padding: .2rem .25rem;
-    font-size: .32rem;
+    width: $width;
+    height: 100rpx;
+    padding: 20rpx 25rpx;
+    font-size: 32rpx;
     color: black;
     line-height: 1.3;
     .title {
-      width: 90%;
+      width: $width*0.9;
       font-weight: bold;
     }
   }
   .action-sheet {
-    height: 55vh;
-    margin-top: 1rem;
-    overflow: scroll;
+    height: 50vh;
+    margin-top: 100rpx;
+    overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
     &::-webkit-scrollbar {
@@ -101,13 +104,13 @@ export default {
     }
   }
   .delete {
-    height: 1rem;
-    margin-top: 1rem;
-    padding-left: .2rem;
-    line-height: 1rem;
-    i {
-      font-size: .32rem;
-      padding-right: .1rem;
+    height: 100rpx;
+    margin-top: 100rpx;
+    padding-left: 20rpx;
+    line-height: 100rpx;
+    text {
+      font-size: 32rpx;
+      padding-right: 10rpx;
     }
   }
 }

@@ -2,8 +2,8 @@
   <view class="video">
     <view
       class="video-for on-touch"
-      v-for="(item, index) in data" :key="index"
-      @tap="$router.push(`/landscape?vid=${item.vid}&type=${item.type}`)"
+      v-for="(item, index) in videoData" :key="index"
+      @tap="goPlay(item.vid, item.type)"
     >
       <view class="img-info">
         <view class="tag">
@@ -12,7 +12,7 @@
         </view>
         <image :src="item.coverUrl + '?param=300y150'" alt />
       </view>
-      <view class="info" :style="{width: search ? '200px' : '160px'}">
+      <view class="info" :style="[{width: search ? '200px' : '160px'}]">
         <text class="name u-line-2">{{ item.title }}</text>
         <view class="artist van-ellipsis">
           <text class="time">{{item.durationms | filterSetTime}} by</text>
@@ -30,8 +30,8 @@ import { filterPlayCount, filterSetTime } from '@/common/filters'
 export default {
   name: 'VideoList',
   props: {
-    data: {
-      type: Array
+    videoData: {
+      type: [Object, Array]
     },
     search: {
       type: Boolean
@@ -40,6 +40,13 @@ export default {
   methods: {
     no () {
       uni.showToast({title: '暂不支持,敬请期待', icon: 'none'})
+    },
+    goPlay (id, type) {
+      uni.navigateTo({
+        url: `../landscape/Landscape?vid=${id}&type=${type}`,
+        animationType: 'pop-in',
+        animationDuration: 200
+      })
     }
   },
   filters: {

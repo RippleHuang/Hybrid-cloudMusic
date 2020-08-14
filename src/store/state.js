@@ -10,6 +10,6 @@ export default {
   mode: 0, // 用来记录当前播放模式 0：列表循环，1：单曲循环 2：随机播放
   audioIngIndex: -1, // 正在播放的这一首歌曲索引
   fullScreen: false, // 是否是全屏展示播放页
-  searchHistory: JSON.parse(uni.getStorageSync('keywords')) || [], //  搜索历史
+  searchHistory: uni.getStorageSync('keywords') || [], //  搜索历史
   refreshState: 0 // 刷新
 }

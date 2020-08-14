@@ -1,5 +1,10 @@
 <template>
 	<view class="nav">
+
+		<view class="status_bar">
+			<!-- 这里是状态栏 -->
+    </view>
+
 		<!-- 主页面导航 -->
 		<view class="default-nav">
 			<view class="nav-left on-touch" @tap="showPopup">
@@ -86,6 +91,10 @@ export default {
 	width: $width;
 	color: #fff;
 	background-color: $defaultColor;
+	.status_bar {
+		height: var(--status-bar-height);
+		width: 100%;
+	}
 	.default-nav {
 		display: flex;
 		justify-content: space-between;
@@ -102,6 +111,9 @@ export default {
 		}
 		.nav-right {
 			border-radius: 50% 0 0 50%;
+			.icon-sousuo {
+				font-size: 28rpx;
+			}
 		}
 		.tabs {
 			display: flex;

@@ -21,12 +21,24 @@ export default {
       homeAppIcons: []
     }
   },
-  mounted () {
-    this.homeAppIcons = HomeAppIcons()
+  watch: {
+    dj (val, oldV) {
+      if (val) this.homeAppIcons[3].num = val
+    },
+    favorite (val, oldV) {
+      if (val) this.homeAppIcons[4].num = val
+    },
+    '$store.state.loginState': {
+      handler (val, oldV) {
+        if (!val) {
+          this.homeAppIcons[3].num = 0
+          this.homeAppIcons[4].num = 0
+        }
+      }
+    }
   },
-  activated () {
-    this.homeAppIcons[3].num = this.dj
-    this.homeAppIcons[4].num = this.favorite
+  created () {
+    this.homeAppIcons = HomeAppIcons()
   },
   components: {
     HomeFor

@@ -7,8 +7,9 @@
 			"path": "pages/index/index",
 			"style": {
 				// #ifndef MP
-					"navigationStyle": "custom"
+					"navigationStyle": "custom",
 				// #endif
+					"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -26,10 +27,162 @@
 					"navigationStyle": "custom"
 				// #endif
 			}
-     }
+    },
+		{
+			"path" : "pages/showsong/showSongList",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+    },
+		{
+			"path" : "pages/songListSquare/SongListSquare",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+    },
+		{
+			"path" : "pages/rankingList/RankingList",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/moreNewPlate/MoreNewPlate",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/recommend/Recommend",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/newSongs/NewSongs",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/myRadio/MyRadio",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/myFavorite/MyFavorite",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/compileSongList/CompileSongList",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/recentPlay/RecentPlay",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/userInfo/userInfo",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/loginIndex/LoginIndex",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/listAll/ListAll",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/loginIndex/LoginPhone",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/loginIndex/PhonePass",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/loginIndex/ForgetPass",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/loginIndex/PhoneVerify",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/loginIndex/NickName",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		},
+		{
+			"path" : "pages/landscape/Landscape",
+			"style": {
+				// #ifndef MP
+					"navigationStyle": "custom"
+				// #endif
+			}
+		}
   ],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
+		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "网易云",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"

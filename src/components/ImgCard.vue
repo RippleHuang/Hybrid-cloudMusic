@@ -1,21 +1,21 @@
 <template>
-  <view class="img-card" :style="{width}">
+  <view class="img-card" :style="[{width}]">
     <!-- 发现页面歌单显示播放数 -->
     <view class="tag" v-if="playCount">
       <text class="iconfont icon-gedanbofangliang_"></text>
       {{playCount | filterPlayCount}}
     </view>
-    <view class="img-con">
+    <view class="img-con" :class="width ? 'image-song':''" @tap="goPage">
       <!-- 发现页面新歌图标 -->
       <view class="newsong-icon" v-if="newPlatetype === 'newSong'">
         <text class="iconfont icon-bofang"></text>
       </view>
       <!-- 蒙版 -->
-      <view class="mask on-touch"></view>
+      <view :class="width ? 'image-song':''" class="mask on-touch"></view>
       <!-- 排行榜time更新 -->
       <text class="time" v-if="updateTime">{{ updateTime }}</text>
       <!-- 图片地址加上 ?param=数字y数字 可以控制尺寸 -->
-      <image class="image-con" :src="url + '?param=150y150'" alt="" @load="imgLoad" />
+      <image :class="width ? 'image-song':''" class="image-con" :src="url + '?param=150y150'" alt="" @load="imgLoad" />
     </view>
     <view v-if="songtitle" class="songtitle u-line-2" >{{ songtitle }}</view>
   </view>
@@ -45,12 +45,19 @@ export default {
     },
     updateTime: {
       type: String
+    },
+    rangking: {
+      type: Boolean
     }
   },
   filters: {
     filterPlayCount
   },
   methods: {
+    goPage () {
+      if (this.rangking) this.$emit('goPage', this.albumId)
+      else this.$emit('goPage')
+    },
     imgLoad () {
       this.$emit('loadingImg', true)
     }
@@ -80,6 +87,7 @@ export default {
     position: absolute;
     left: 20rpx;
     bottom: 20rpx;
+    z-index: 3;
     font-size: 22rpx;
     color: #fff;
   }
@@ -120,16 +128,22 @@ export default {
     .image-con {
       width: $width*0.29;
       height: $width*0.29;
+      border-radius: 10rpx;
+      overflow: hidden;
     }
   }
   .songtitle {
     padding-top: 13rpx;
-    line-height: 1.2;
+    line-height: 1.3;
     box-sizing: border-box;
     font-size: 28rpx;
     letter-spacing: none;
     // 字母不换行
     word-break: break-all;
   }
+}
+.image-song {
+  width: $width*0.38 !important;
+  height: $width*0.38 !important;
 }
 </style>

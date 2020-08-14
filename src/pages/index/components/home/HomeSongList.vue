@@ -1,10 +1,10 @@
 <template>
-  <view class="container">
+  <view class="list-container">
     <u-collapse class="song-list-con" hover-class="none" :accordion="false">
       <!-- 创建的歌单 -->
-      <u-collapse-item @change="changeActive" :open="true" index="1" class="song-list-item">
+      <u-collapse-item @change="changeActive" :index="0" class="song-list-item">
         <!-- 标题 -->
-        <template #title-all>
+        <template slot="title-all">
           <view class="title-all on-touch">
             <view class="left-title">
               <text class="iconfont" :class="oneArrow"></text>
@@ -21,8 +21,8 @@
         </template>
         <!-- 歌单列表 -->
         <!-- 没登录的情况下列表项显示 -->
-        <view class="song-group" v-if="!$store.state.loginState">
-          <view class="song-list" @tap="$toast('需要登录')">
+        <scroll-view scroll-y class="song-group" v-if="!$store.state.loginState">
+          <view class="song-list" @tap="toast('需要登录')">
             <view class="left">
               <view class="list-cover">
                 <view class="bgc">
@@ -35,62 +35,62 @@
               </view>
             </view>
             <view class="heart-module">
-              <button class="title-btn" @tap.stop="$toast('需要登录')">
+              <button class="title-btn" @tap.stop="toast('需要登录')">
                 <text class="iconfont icon-xindong"></text>心动模式
               </button>
             </view>
           </view>
-        </view>
+        </scroll-view>
         <!-- 登录的情况下列表项显示 -->
-        <view class="song-group" v-if="$store.state.loginState">
+        <scroll-view scroll-y class="song-group" v-if="$store.state.loginState">
           <!-- 我喜欢的音乐 -->
-          <song-list-view
-            v-for="(item, index) in myLoveList" :key="index"
-            :coverImgUrl="item.coverImgUrl"
-            :name="item.name"
-            :trackCount="item.trackCount"
-            :privacy="item.privacy"
+          <song-list-li
+            v-if="myLoveList[0] != null"
+            :coverImgUrl="myLoveList[0].coverImgUrl"
+            :name="myLoveList[0].name"
+            :trackCount="myLoveList[0].trackCount"
+            :privacy="myLoveList[0].privacy"
             myLove
             home
-            :id="item.id"
-            @getHeartMode="getHeartMode"
-            @tap.native="$router.push(`/showsong?albumId=${item.id}`)"
+            :songListId="myLoveList[0].id"
+            @eventThing="goSongShow(myLoveList[0].id)"
           />
-          <!-- 由于我喜欢的音乐占了一个,索引+1 -->
-          <song-list-view
-            v-for="(item, index) in createList" :key="index+1"
+          <song-list-li
+            v-for="(item, index) in createList" :key="index"
             :coverImgUrl="item.coverImgUrl"
             :name="item.name"
             :trackCount="item.trackCount"
             :privacy="item.privacy"
             :description="item.description"
-            :id="item.id"
+            :songListId="item.id"
             home
             showActionSheet
             @showAction="showAction"
-            @tap.native="$router.push(`/showsong?albumId=${item.id}`)"
+            @eventThing="goSongShow(item.id)"
           />
-        </view>
+        </scroll-view>
       </u-collapse-item>
       <!-- 收藏的歌单 -->
       <!-- 有收藏的情况下才显示 -->
-      <u-collapse-item v-if="favoritesList.length > 0" index="2" class="song-list-item" @change="changeActive">
+      <u-collapse-item v-if="favoritesList.length > 0" :index="1" class="song-list-item" @change="changeActive">
         <!-- 标题 -->
-        <template #title-all>
-          <view class="left-title">
-            <text class="iconfont" :class="twoArrow"></text>
-            <text class="title">收藏的歌单</text>
-            <text class="num">({{songListNum.favoritesNum}})</text>
-          </view>
-          <!-- 右边按钮图标 -->
-          <!-- 阻止冒泡 -->
-          <view class="right-icon" @tap.stop>
-            <text class="iconfont icon-sandian on-touch" @tap="activeButton(2)"></text>
+        <template slot="title-all">
+          <view class="title-all on-touch">
+            <view class="left-title">
+              <text class="iconfont" :class="twoArrow"></text>
+              <text class="title">收藏的歌单</text>
+              <text class="num">({{songListNum.favoritesNum}})</text>
+            </view>
+            <!-- 右边按钮图标 -->
+            <!-- 阻止冒泡 -->
+            <view class="right-icon" @tap.stop>
+              <text class="iconfont icon-sandian on-touch" @tap="activeButton(2)"></text>
+            </view>
           </view>
         </template>
         <!-- 歌单列表 -->
-        <view class="song-group">
-          <song-list-view
+        <scroll-view scroll-y class="song-group">
+          <song-list-li
             v-for="(item, index) in favoritesList" :key="index"
             :coverImgUrl="item.coverImgUrl"
             :name="item.name"
@@ -98,64 +98,22 @@
             :creatorNickname="item.creator.nickname"
             :privacy="item.privacy"
             :description="item.description"
-            :id="item.id"
+            :songListId="item.id"
             home
             noCompile
             showActionSheet
             @showAction="showAction"
-            @tap.native="$router.push(`/showsong?albumId=${item.id}`)"
+            @eventThing="goSongShow(item.id)"
           />
-        </view>
+        </scroll-view>
       </u-collapse-item>
     </u-collapse>
-    <!-- 模态框 -->
-    <u-modal v-model="showModel" :mask-close-able="true" content="确认删除当前歌单？" @confirm="deleteSongList"></u-modal>
-    <!-- 动作面板 -->
-    <u-popup v-model="show" mode="bottom" border-radius="30">
-      <view v-if="active === 1">
-        <view class="top on-touch">创建的歌单</view>
-        <home-for :icons="createAction" @createSongList="createSongList" :height="0.8" />
-      </view>
-      <view v-if="active === 2">
-        <view class="top on-touch">收藏的歌单</view>
-        <home-for :icons="favoriteAction" :height="0.8" />
-      </view>
-      <view v-if="active === 3">
-        <view class="top on-touch van-ellipsis">歌单: {{title}}</view>
-        <home-for
-          :icons="compile ? songListTwo : songListAction"
-          :height="0.8"
-          :uid="uid"
-          :title="title"
-          :description="description"
-          @deleteSongList="showModel = true"
-        />
-      </view>
-    </u-popup>
-    <!-- 弹出框 -->
-    <u-modal
-      v-model="showDialog"
-      title="新建歌单"
-      @confirm="addSongList"
-    >
-      <u-field
-        v-model="name"
-        maxlength="40"
-        label="名称"
-        placeholder="请输入歌单标题"
-        clearable
-      >
-      </u-field>
-      <u-checkbox v-model="checked" shape="square" active-color="#dd001b">设置为隐私歌单</u-checkbox>
-    </u-modal>
   </view>
 </template>
 <script>
-import { playlist, playlistAdd, playlistDelete } from '@/api/apis'
+import { playlist } from '@/api/apis'
 import SongListLi from '@/components/SongListLi'
-import HomeFor from '@/components/HomeFor'
 import { mapGetters } from 'vuex'
-import { CreateAction, SongListAction } from '@/common/icons'
 export default {
   name: 'HomeSongList',
   props: {
@@ -167,42 +125,16 @@ export default {
     return {
       // 创建歌单与收藏歌单箭头
       activeArrow: {
-        oneShow: true,
+        oneShow: false,
         twoShow: false
       },
-      showModel: false,
       // 收藏歌单详情
       favoritesList: [],
       // 创建歌单详情
       createList: [],
       // 我的喜欢歌单
-      myLoveList: [],
-      // 动作面板
-      show: false,
-      createAction: [],
-      favoriteAction: [{
-        text: '歌单管理',
-        icon: 'iconfont icon-liebiaoguanli',
-        event: 'no'
-      }],
-      songListAction: [],
-      songListTwo: [],
-      compile: false,
-      active: 0,
-      uid: 0,
-      title: '',
-      description: '',
-      // 弹出框
-      showDialog: false,
-      name: '',
-      checked: false
+      myLoveList: []
     }
-  },
-  mounted () {
-    this.initData()
-    const songListTwo = SongListAction().map(item => item)
-    songListTwo.splice(2, 1)
-    this.songListTwo = songListTwo
   },
   computed: {
     ...mapGetters(['accountUid', 'loginState']),
@@ -221,41 +153,54 @@ export default {
         }
       },
       immediate: true
+    },
+    '$store.state.loginState': {
+      handler (val, oldV) {
+        if (!val) {
+          this.favoritesList = []
+        }
+      }
     }
   },
   methods: {
-    // 初始化图标
-    initData () {
-      this.createAction = CreateAction()
-      this.songListAction = SongListAction()
-    },
     toast (title) {
       uni.showToast({
         title,
         icon: 'none'
       })
     },
+    goSongShow (id) {
+      uni.navigateTo({
+				url: `../showsong/showSongList?albumId=${id}`,
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
+    },
     changeActive (data) {
-      if (data.index === '1') this.activeArrow.oneShow = data.show
+      if (data.index === 0) this.activeArrow.oneShow = data.show
       else this.activeArrow.twoShow = data.show
     },
     // 激活相应动作面板
     activeButton (data) {
       if (this.loginState) {
-        this.show = true
-        this.active = data
+        this.$emit('listShow', {
+          showAction: true,
+          active: data
+        })
       } else {
         this.toast('需要登录')
       }
     },
     // 激活歌单列表动作面板
     showAction (data) {
-      this.show = true
-      this.active = 3
-      this.uid = data.id
-      this.title = data.name
-      this.description = data.description
-      this.compile = data.noCompile
+      this.$emit('songListShow', {
+        showAction: true,
+        active: 3,
+        uid: data.id,
+        title: data.name,
+        description: data.description,
+        compile: data.noCompile
+      })
     },
     getPlaylist (id) {
       playlist(id)
@@ -286,46 +231,21 @@ export default {
       if (!this.loginState) {
         this.toast('需要登录')
       } else {
-        this.showDialog = true
-        this.show = false
-      }
-    },
-    // 删除歌单
-    deleteSongList () {
-      this.show = false
-      playlistDelete(this.uid)
-        .then(() => {
-          this.toast('删除成功')
-          // 重新获取
-          this.getPlaylist(this.accountUid)
-          this.$emit('reload')
+        this.$emit('modelShow', {
+          showDialog: true,
+          showAction: false
         })
-    },
-    // 添加歌单
-    addSongList () {
-      if (this.name === '') {
-        this.toast('歌单名不能为空')
-        return
       }
-      const privacy = this.checked ? 10 : 0
-      playlistAdd(this.name, privacy)
-        .then(() => {
-          this.toast('添加成功')
-          // 重新获取
-          this.getPlaylist(this.accountUid)
-          this.$emit('reload')
-        })
     }
   },
   components: {
-    SongListLi,
-    HomeFor
+    SongListLi
   }
 }
 </script>
 <style lang='scss' scoped>
 $songListHeight: 90rpx;
-.container {
+.list-container {
   display: flex;
   .song-list-con {
     display: flex;
@@ -375,6 +295,7 @@ $songListHeight: 90rpx;
         text {
           flex: 1;
           height: $songListHeight;
+          margin-right: 20rpx;
           line-height: $songListHeight;
           text-align: center;
           font-size: 33rpx;
@@ -383,16 +304,9 @@ $songListHeight: 90rpx;
       // 收藏歌单右侧按钮
       .right-icon {
         @extend .right-icons;
-        flex: .111;
+        flex: .12;
       }
     }
-  }
-  .top {
-    height: 80rpx;
-    padding-left: 20rpx;
-    line-height: 80rpx;
-    border-bottom: 1px solid #eee;
-    color: rgb(99, 96, 96);
   }
 }
 .first {

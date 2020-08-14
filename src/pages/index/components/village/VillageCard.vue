@@ -39,7 +39,13 @@ export default {
   },
   methods: {
     goUserInfo () {
-      if (this.$store.state.loginState) this.$router.push('/userInfo??accountUid=' + this.userId)
+      if (this.$store.state.loginState) {
+        uni.navigateTo({
+          url: '../userInfo/userInfo?accountUid=' + this.userId,
+          animationType: 'pop-in',
+          animationDuration: 200
+        })
+      }
       else uni.showToast({title: '需要登录', icon: 'none'})
     }
   },

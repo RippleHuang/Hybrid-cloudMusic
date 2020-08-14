@@ -4,7 +4,7 @@
     <icons
       v-for="(item, index) in findIcons" :key="index"
       :icons="item"
-      @tap.native="forEvent(item.event)"
+      @noAction="forEvent(item.event)"
     />
   </view>
 </view>
@@ -26,30 +26,48 @@ export default {
   methods: {
     forEvent (event) {
       this[event]()
+    },
+    toast (title) {
+      uni.showToast({
+        title,
+        icon: 'none'
+      })
+    },
+    no () {
+      this.toast('该功能尚未完成,敬请期待')
+    },
+    goRecommend () {
+      if (this.$store.state.loginState) {
+        uni.navigateTo({
+          url: '../recommend/Recommend',
+          animationType: 'pop-in',
+          animationDuration: 200
+        })
+      } else {
+        this.toast('需要登录')
+      }
+    },
+    moreSonglist () {
+      uni.navigateTo({
+				url: '../songListSquare/SongListSquare',
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
+    },
+    goRankingList () {
+      uni.navigateTo({
+				url: '../rankingList/RankingList',
+				animationType: 'pop-in',
+				animationDuration: 200
+			})
+    },
+    goPersonalFm () {
+      personalFm()
+        .then(data => {
+          const list = data.data
+          this.$store.dispatch('startPlayAll', { list })
+        })
     }
-    // no () {
-    //   this.$toast('该功能尚未完成,敬请期待')
-    // },
-    // goRecommend () {
-    //   if (this.$store.state.loginState) {
-    //     // this.$router.push('/recommend')
-    //   } else {
-    //     this.$toast('需要登录')
-    //   }
-    // },
-    // moreSonglist () {
-    //   // this.$router.push('/songlistsquare')
-    // },
-    // goRankingList () {
-    //   // this.$router.push('/rankinglist')
-    // },
-    // goPersonalFm () {
-    //   personalFm()
-    //     .then(data => {
-    //       const list = data.data
-    //       this.$store.dispatch('startPlayAll', { list })
-    //     })
-    // }
   },
   components: {
     Icons

@@ -3,16 +3,16 @@
     <loading :height="4.58" :style="[{display: loading ? 'flex' : 'none'}]" />
     <view class="search-container" :style="[{display: !loading ? 'block' : 'none'}]">
       <!-- 历史记录 -->
-      <view class="history" v-if="$store.getters.searchHistory.length">
+      <view class="history" v-if="history.length">
         <view class="top">
           <text class="title">历史记录</text>
-          <text class="iconfont icon-trash" @tap="$store.commit('CLEAR_HISTORY')"></text>
+          <text class="iconfont icon-trash" @tap="clearSearch"></text>
         </view>
         <view class="history-box">
           <view class="tag-group">
             <view
               class="tags-item"
-              v-for="(item, index) in $store.getters.searchHistory" :key="index"
+              v-for="(item, index) in history" :key="index"
               @tap="goSearch(item)"
             >
               {{item}}
@@ -52,16 +52,23 @@
 <script>
 import { hotSearchList } from '@/api/apis'
 import Loading from '@/components/Loading'
+import { mapGetters } from 'vuex'
 export default {
   name: 'SearchDefault',
   data () {
     return {
       loading: true,
-      hotList: []
+      hotList: [],
+      history: []
     }
+  },
+  computed: {
+    ...mapGetters(['searchHistory'])
   },
   created () {
     this.getHotSearchList()
+    const history = this.searchHistory
+    if (history.length !== 0) this.history = JSON.parse(history)
   },
   methods: {
     getHotSearchList () {
@@ -72,6 +79,9 @@ export default {
             this.loading = false
           })
         })
+    },
+    clearSearch () {
+      this.$store.commit('CLEAR_HISTORY')
     },
     // 去搜索页并保存历史记录
     goSearch (keyword) {
@@ -91,6 +101,13 @@ export default {
 <style lang='scss' scoped>
 .search-default {
   padding-top: $height;
+  height: 100vh;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .history {
     padding: 30rpx 40rpx 0;
     .top {
@@ -123,8 +140,6 @@ export default {
         width: max-content;
         .tags-item {
           display: inline-block;
-          *display: inline;
-          *zoom:1;
           height: 60rpx;
           padding: 0 20rpx;
           margin-right: 30rpx;
@@ -184,7 +199,7 @@ export default {
           font-size: 32rpx;
           .search-logo {
             margin: -10rpx 0 0 10rpx;
-            height: 15rpx;
+            height: 25rpx;
           }
         }
       }

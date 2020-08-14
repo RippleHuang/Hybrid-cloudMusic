@@ -130,6 +130,7 @@
 			// 点击collapsehead头部
 			headClick() {
 				if (this.disabled) return;
+				this.init();
 				if (this.uCollapse.accordion == true) {
 					this.uCollapse.childrens.map(val => {
 						// 自身不设置为false，因为后面有this.isShow = !this.isShow;处理了

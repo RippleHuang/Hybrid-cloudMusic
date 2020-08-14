@@ -44,7 +44,7 @@ export default {
   },
   // 退出
   [LOGIN_OUT] (state) {
-    localStorage.clear()
+    uni.clearStorageSync()
     state.level = 0
     state.accountUid = 0
     state.nickName = ''
