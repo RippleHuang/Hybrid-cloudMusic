@@ -13,119 +13,7 @@
 			}
 		},
 		{
-			"path" : "pages/search/search",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/searchresult/searchresult",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-    },
-		{
-			"path" : "pages/showsong/showSongList",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-    },
-		{
-			"path" : "pages/songListSquare/SongListSquare",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-    },
-		{
-			"path" : "pages/rankingList/RankingList",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/moreNewPlate/MoreNewPlate",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/recommend/Recommend",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/newSongs/NewSongs",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/myRadio/MyRadio",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/myFavorite/MyFavorite",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/compileSongList/CompileSongList",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/recentPlay/RecentPlay",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/userInfo/userInfo",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
 			"path" : "pages/loginIndex/LoginIndex",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
-		},
-		{
-			"path" : "pages/listAll/ListAll",
 			"style": {
 				// #ifndef MP
 					"navigationStyle": "custom"
@@ -171,18 +59,140 @@
 					"navigationStyle": "custom"
 				// #endif
 			}
-		},
-		{
-			"path" : "pages/landscape/Landscape",
-			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
-			}
 		}
-  ],
+	],
+	"subPackages": [{
+		"root": "otherPages",
+		"pages": [
+			{
+				"path" : "search/search",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "searchresult/searchresult",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "showsong/showSongList",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "songListSquare/SongListSquare",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "rankingList/RankingList",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "moreNewPlate/MoreNewPlate",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "recommend/Recommend",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "newSongs/NewSongs",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "myRadio/MyRadio",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "myFavorite/MyFavorite",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "compileSongList/CompileSongList",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "recentPlay/RecentPlay",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "userInfo/userInfo",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "listAll/ListAll",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			},
+			{
+				"path" : "landscape/Landscape",
+				"style": {
+					// #ifndef MP
+						"navigationStyle": "custom"
+					// #endif
+				}
+			}
+		]
+	}],
 	"globalStyle": {
-		"navigationBarTextStyle": "white",
+		// #ifdef MP
+			"navigationBarTextStyle": "balck",
+		// #endif
+		// #ifndef MP
+			"navigationBarTextStyle": "white",
+		// #endif
 		"navigationBarTitleText": "网易云",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"

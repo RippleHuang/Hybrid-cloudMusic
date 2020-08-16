@@ -60,7 +60,7 @@ export default {
       const { uid, title, description } = this
       const des = description != null ? description : ''
       uni.navigateTo({
-				url: `../compileSongList/CompileSongList?id=${uid}&title=${title}&description=${des}`,
+				url: `/otherPages/compileSongList/CompileSongList?id=${uid}&title=${title}&description=${des}`,
 				animationType: 'pop-in',
 				animationDuration: 200
 			})
@@ -71,7 +71,7 @@ export default {
     goMyRadio () {
       if (this.$store.state.loginState) {
         uni.navigateTo({
-          url: '../myRadio/MyRadio',
+          url: '/otherPages/myRadio/MyRadio',
           animationType: 'pop-in',
           animationDuration: 200
         })
@@ -82,7 +82,7 @@ export default {
     goMyFavorite () {
       if (this.$store.state.loginState) {
         uni.navigateTo({
-          url: '../myFavorite/MyFavorite',
+          url: '/otherPages/myFavorite/MyFavorite',
           animationType: 'pop-in',
           animationDuration: 200
         })

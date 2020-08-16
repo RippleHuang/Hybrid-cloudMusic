@@ -11,5 +11,8 @@ export default {
   mode: state => state.mode,
   fullScreen: state => state.fullScreen,
   audioIngSong: state => state.playList[state.audioIngIndex] || {}, // 返回当前播放歌曲对象的信息
-  searchHistory: state => state.searchHistory
+  searchHistory: state => { 
+    if (Array.isArray(state.searchHistory)) return state.searchHistory
+    else return JSON.parse(state.searchHistory)
+  }
 }

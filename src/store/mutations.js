@@ -84,17 +84,17 @@ export default {
       oldA.unshift(keyword)
       // 去重
       const newA = [...new Set(oldA)]
-      state.searchHistory = newA
+      state.searchHistory = JSON.stringify(newA)
       uni.setStorageSync('keywords', JSON.stringify(newA))
     } else {
-      state.searchHistory = [keyword]
+      state.searchHistory = JSON.stringify([keyword])
       uni.setStorageSync('keywords', JSON.stringify([keyword]))
     }
   },
   // 清除搜索历史
   [CLEAR_HISTORY] (state) {
-    state.searchHistory = []
     uni.removeStorageSync('keywords')
+    state.searchHistory = []
   },
   // 页面刷新
   [REFRESH] (state) {

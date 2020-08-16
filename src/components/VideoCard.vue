@@ -35,6 +35,11 @@
         'border-radius': !dynamic ? '10px' : landscape ? '0' : '5px'
       }]"
     >
+      <!-- #ifdef APP-PLUS -->
+      <view class="status_bar">
+        <!-- 这里是状态栏 -->
+      </view>
+      <!-- #endif -->
       <view class="top u-line-1" :style="[{display: landscape ? 'block' : 'none'}]">
         <text class="iconfont icon-zuo" @tap="goback"></text>
         <text class="title">{{videoData.title || videoData.name}}</text>
@@ -177,7 +182,7 @@ export default {
         this.videoCanPlay = false
         const { vid, type } = this
         uni.navigateTo({
-          url: `../landscape/Landscape?vid=${vid}&type=${type}`,
+          url: `/otherPages/landscape/Landscape?vid=${vid}&type=${type}`,
           animationType: 'pop-in',
           animationDuration: 200
         })
@@ -198,7 +203,7 @@ export default {
     goUserInfo (videoData) {
       if (videoData) {
         uni.navigateTo({
-          url: '../userInfo/userInfo?accountUid=' + videoData.userId,
+          url: '/otherPages/userInfo/userInfo?accountUid=' + videoData.userId,
           animationType: 'pop-in',
           animationDuration: 200
         })
@@ -289,13 +294,18 @@ export default {
     position: relative;
     height: auto;
     padding-top: 60rpx;
-    /* #ifdef APP-PLUS */
-    top: calc(10px + var(--status-bar-height));
-    /* #endif */
+    background-color: black;
     overflow: hidden;
+    .status_bar {
+      height: var(--status-bar-height);
+      width: 100%;
+    }
     .top {
       position: absolute;
       top: 0;
+      /* #ifdef APP-PLUS */
+      top: var(--status-bar-height);
+      /* #endif */
       left: 0;
       z-index: 10;
       height: 60rpx;
@@ -310,11 +320,6 @@ export default {
       .title {
         font-size: 30rpx;
       }
-    }
-    .cover-video {
-      width: 350px;
-      height: 225px;
-      opacity: 0.01;
     }
     .video-mp4 {
       width: 100%;

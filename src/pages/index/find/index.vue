@@ -79,5 +79,6 @@ export default {
   /* #ifdef APP-PLUS */
 	padding-top: var(--status-bar-height);
   /* #endif */
+  width: $width;
 }
 </style>

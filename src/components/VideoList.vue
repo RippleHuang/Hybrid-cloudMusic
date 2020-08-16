@@ -43,7 +43,7 @@ export default {
     },
     goPlay (id, type) {
       uni.navigateTo({
-        url: `../landscape/Landscape?vid=${id}&type=${type}`,
+        url: `/otherPages/landscape/Landscape?vid=${id}&type=${type}`,
         animationType: 'pop-in',
         animationDuration: 200
       })

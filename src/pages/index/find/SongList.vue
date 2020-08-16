@@ -35,14 +35,14 @@ export default {
   methods: {
     goSongShow (id) {
       uni.navigateTo({
-				url: `../showsong/showSongList?albumId=${id}`,
+				url: `/otherPages/showsong/showSongList?albumId=${id}`,
 				animationType: 'pop-in',
 				animationDuration: 200
 			})
     },
     goShowList () {
       uni.navigateTo({
-				url: '../songListSquare/SongListSquare',
+				url: '/otherPages/songListSquare/SongListSquare',
 				animationType: 'pop-in',
 				animationDuration: 200
 			})

@@ -68,7 +68,7 @@ export default {
   methods: {
     goSongShow (id) {
       uni.navigateTo({
-				url: `../showsong/showSongList?dishId=${id}`,
+				url: `/otherPages/showsong/showSongList?dishId=${id}`,
 				animationType: 'pop-in',
 				animationDuration: 200
 			})
@@ -89,14 +89,14 @@ export default {
     },
     goPlate () {
       uni.navigateTo({
-				url: '../moreNewPlate/MoreNewPlate',
+				url: '/otherPages/moreNewPlate/MoreNewPlate',
 				animationType: 'pop-in',
 				animationDuration: 200
 			})
     },
     goNewSong () {
       uni.navigateTo({
-				url: '../newSongs/NewSongs',
+				url: '/otherPages/newSongs/NewSongs',
 				animationType: 'pop-in',
 				animationDuration: 200
 			})

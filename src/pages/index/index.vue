@@ -17,16 +17,17 @@
 						@list="listShow"
 						@songlist="songListShow"
 						@model="modelShow"
+						:activeIndex="activeIndex"
 					/>
 				</swiper-item>
 				<swiper-item class="tab-swiper-item">
 					<find-index :refresh="refresh" />
 				</swiper-item>
 				<swiper-item class="tab-swiper-item">
-					<village-index />
+					<village-index :activeIndex="activeIndex" />
 				</swiper-item>
 				<swiper-item class="tab-swiper-item">
-					<video-index />
+					<video-index :activeIndex="activeIndex" />
 				</swiper-item>
 			</swiper>
 		</view>
@@ -97,12 +98,12 @@
 
 <script>
 import DefaultNav from '@/components/DefaultNav'
-import HomeIndex from './components/home/index'
-import FindIndex from './components/find/index'
-import VillageIndex from './components/village/index'
-import VideoIndex from './components/video/index'
-import LeftPopup from './LeftPopup'
-import PlayMusicIndex from './components/playMusic/PlayMusicIndex'
+import HomeIndex from './home/index'
+import FindIndex from './find/index'
+import VillageIndex from './village/index'
+import VideoIndex from './video/index'
+import LeftPopup from '@/components/LeftPopup'
+import PlayMusicIndex from '@/components/playMusic/PlayMusicIndex'
 import HomeFor from '@/components/HomeFor'
 import { mapGetters } from 'vuex'
 import { CreateAction, SongListAction } from '@/common/icons'

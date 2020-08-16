@@ -171,7 +171,7 @@ export default {
     },
     goSongShow (id) {
       uni.navigateTo({
-				url: `../showsong/showSongList?albumId=${id}`,
+				url: `/otherPages/showsong/showSongList?albumId=${id}`,
 				animationType: 'pop-in',
 				animationDuration: 200
 			})

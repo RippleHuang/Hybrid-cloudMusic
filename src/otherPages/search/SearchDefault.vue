@@ -3,7 +3,7 @@
     <loading :height="4.58" :style="[{display: loading ? 'flex' : 'none'}]" />
     <view class="search-container" :style="[{display: !loading ? 'block' : 'none'}]">
       <!-- 历史记录 -->
-      <view class="history" v-if="history.length">
+      <view class="history" v-if="searchHistory.length">
         <view class="top">
           <text class="title">历史记录</text>
           <text class="iconfont icon-trash" @tap="clearSearch"></text>
@@ -12,7 +12,7 @@
           <view class="tag-group">
             <view
               class="tags-item"
-              v-for="(item, index) in history" :key="index"
+              v-for="(item, index) in searchHistory" :key="index"
               @tap="goSearch(item)"
             >
               {{item}}
@@ -58,8 +58,7 @@ export default {
   data () {
     return {
       loading: true,
-      hotList: [],
-      history: []
+      hotList: []
     }
   },
   computed: {
@@ -67,8 +66,6 @@ export default {
   },
   created () {
     this.getHotSearchList()
-    const history = this.searchHistory
-    if (history.length !== 0) this.history = JSON.parse(history)
   },
   methods: {
     getHotSearchList () {

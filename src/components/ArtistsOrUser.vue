@@ -66,7 +66,7 @@ export default {
       if (this.user) {
         if (this.$store.state.loginState) {
           uni.navigateTo({
-            url: '../userInfo/userInfo?accountUid=' + id,
+            url: '/otherPages/userInfo/userInfo?accountUid=' + id,
             animationType: 'pop-in',
             animationDuration: 200
           })

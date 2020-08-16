@@ -224,8 +224,6 @@ export default {
     audio (val, old) {
       // 销毁上一首歌曲
       if (old) {
-        console.log('old: ', old)
-        // 不是单曲循环销毁
         old.destroy()
       }
     },
@@ -284,7 +282,7 @@ export default {
             this.url = data.data[0].url
             this.audio = uni.createInnerAudioContext()
             this.getSongLyric(id)
-            this.audio.onCanplay(this.starPlay())
+            this.starPlay()
           } else {
             // 移出播放列表
             this.deleteSong(this.audioIngSong)
@@ -544,17 +542,19 @@ export default {
     },
     // 播放歌曲
     starPlay () {
-      this.audio.autoplay = true
-      this.audio.src = this.url
+      const _this = this
+      const audio = this.audio
+      audio.autoplay = true
+      audio.src = this.url
       this.audio.onTimeUpdate(() => {
         this.playing()
-      })
-      this.audio.onEnded(() => {
-        this.end()
       })
       this.audio.onPlay(() => {
         console.log('开始播放')
         this.readySong = true
+      })
+      this.audio.onEnded(() => {
+        this.end()
       })
     },
     // 暂停歌曲

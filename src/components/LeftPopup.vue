@@ -78,7 +78,7 @@
 </template>
 <script>
 import { PopupTopIcons, PopupShopIcons, PopupAppIcons, PopupBottomIcons } from '@/common/icons'
-import PopupTop from './PopupTop'
+import PopupTop from '@/components/PopupTop'
 import { logout } from '@/api/apis'
 import { mapGetters } from 'vuex'
 export default {

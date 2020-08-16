@@ -48,15 +48,6 @@ export default {
       },
       immediate: true
     },
-    // 暂时没有对视频进行操作,只监听用户id就行
-    '$store.state.accountUid': {
-      handler () {
-        if (this.loginState) {
-          this.getVideos()
-        }
-      },
-      immediate: true
-    },
     loginState: {
       handler (val, oldV) {
         if (!val) {

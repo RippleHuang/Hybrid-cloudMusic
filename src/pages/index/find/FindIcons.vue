@@ -39,7 +39,7 @@ export default {
     goRecommend () {
       if (this.$store.state.loginState) {
         uni.navigateTo({
-          url: '../recommend/Recommend',
+          url: '/otherPages/recommend/Recommend',
           animationType: 'pop-in',
           animationDuration: 200
         })
@@ -49,14 +49,14 @@ export default {
     },
     moreSonglist () {
       uni.navigateTo({
-				url: '../songListSquare/SongListSquare',
+				url: '/otherPages/songListSquare/SongListSquare',
 				animationType: 'pop-in',
 				animationDuration: 200
 			})
     },
     goRankingList () {
       uni.navigateTo({
-				url: '../rankingList/RankingList',
+				url: '/otherPages/rankingList/RankingList',
 				animationType: 'pop-in',
 				animationDuration: 200
 			})

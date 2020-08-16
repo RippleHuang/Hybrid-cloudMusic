@@ -261,21 +261,12 @@
 					}
 					view.exec(res => {
 						const arr = [];
-						if (res[0] != null && res[0].left !== 0) {
-							for (let i = 0; i < res.length; i++) {
-								res[i].color = this.inactiveColor;
-								if (i == this.getCurrent) res[i].color = this.activeColor;
-								res[i].left -= 750;
-								arr.push(res[i]);
-							}
-						} else {
-							for (let i = 0; i < res.length; i++) {
-								// 给每个tab添加其文字颜色属性
-								res[i].color = this.inactiveColor;
-								// 当前tab直接赋予activeColor
-								if (i == this.getCurrent) res[i].color = this.activeColor;
-								arr.push(res[i]);
-							}
+						for (let i = 0; i < res.length; i++) {
+							// 给每个tab添加其文字颜色属性
+							res[i].color = this.inactiveColor;
+							// 当前tab直接赋予activeColor
+							if (i == this.getCurrent) res[i].color = this.activeColor;
+							arr.push(res[i]);
 						}
 						this.tabsInfo = arr;
 						resolve();

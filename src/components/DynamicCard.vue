@@ -240,14 +240,14 @@ export default {
       if (_data.playlist) {
         const playListId = _data.playlist.id
         uni.navigateTo({
-          url: `../showsong/showSongList?albumId=${playListId}`,
+          url: `/otherPages/showsong/showSongList?albumId=${playListId}`,
           animationType: 'pop-in',
           animationDuration: 200
         })
       } else if (_data.album) {
         const albumId = _data.album.id
         uni.navigateTo({
-          url: `../showsong/showSongList?dishId=${albumId}`,
+          url: `/otherPages/showsong/showSongList?dishId=${albumId}`,
           animationType: 'pop-in',
           animationDuration: 200
         })
@@ -292,7 +292,7 @@ export default {
         this.toast('这是自己的动态')
       } else {
         uni.navigateTo({
-          url: '../userInfo/userInfo?accountUid=' + id,
+          url: '/otherPages/userInfo/userInfo?accountUid=' + id,
           animationType: 'pop-in',
           animationDuration: 200
         })

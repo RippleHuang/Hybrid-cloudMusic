@@ -7,6 +7,7 @@
 				:imgUrl="imgUrl + '?param=300y300'"
 				:isFixedTitle="fixed"
 				height="60px"
+				v-if="imgUrl"
 				isFixedSong
 				songList
 			/>

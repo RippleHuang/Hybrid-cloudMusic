@@ -28,10 +28,12 @@
 						/>
 					</view>
         </scroll-view>
-        <view class="empty" v-else>
-          <text class="iconfont icon-kong"></text>
-          <text>需要登录</text>
-        </view>
+        <scroll-view v-else>
+          <view class="empty">
+            <text class="iconfont icon-kong"></text>
+            <text>需要登录</text>
+          </view>
+        </scroll-view>
 			</swiper-item>
 		</swiper>
     <loading :height="0.8" :style="[{display: reload ? 'flex' : 'none', bottom: '0px', position: 'fixed'}]"/>
@@ -44,6 +46,11 @@ import { videoTag, videoGroup } from '@/api/apis'
 import { getRandomNumberArray } from '@/common/randomNumberArray'
 export default {
   name: 'VideoIndex',
+  props: {
+    activeIndex: {
+      type: Number
+    }
+  },
   data () {
     return {
 	    swiperCurrent: 0,
@@ -58,9 +65,6 @@ export default {
       vid: 0 || ''
     }
   },
-  mounted () {
-    this.getVideoTag()
-  },
   watch: {
     // active 变化清空数据
     active: {
@@ -71,6 +75,18 @@ export default {
         if (this.listTag[val].data.length === 0) {
           this.loading = true
           this.getVideoGroup(this.listTag[val].id, 0)
+        }
+      }
+    },
+    activeIndex (val, oldV) {
+      if (val === 3 && this.listTag.length === 0) {
+        this.getVideoTag()
+      }
+    },
+    '$store.state.loginState': {
+      handler (val, oldV) {
+        if (val && this.listTag.length === 0) {
+          this.getVideoTag()
         }
       }
     }
@@ -176,5 +192,8 @@ export default {
     padding-top: calc(40px + var(--status-bar-height));
     /* #endif */
   }
+}
+.empty {
+  margin-top: 300rpx;
 }
 </style>

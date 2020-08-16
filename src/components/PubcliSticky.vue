@@ -204,7 +204,7 @@ export default {
     },
     goIndex () {
       uni.navigateTo({
-        url: '../index/index',
+        url: '/pages/index/index',
         animationType: 'pop-in',
         animationDuration: 200
       })

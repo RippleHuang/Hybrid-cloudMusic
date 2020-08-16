@@ -136,7 +136,7 @@ export default {
       this.show = false
       if (!this.text) {
         uni.navigateTo({
-          url: `../searchresult/searchresult?search=searchResult&text=${keyword}`,
+          url: `/otherPages/searchresult/searchresult?search=searchResult&text=${keyword}`,
           animationType: 'pop-in',
           animationDuration: 200
         })

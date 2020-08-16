@@ -43,7 +43,7 @@
 					<text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
 				</swiper-item>
 			</swiper>
-			<!-- 下拉加载 -->
+      <!-- 下拉加载 -->
       <loading :height="0.8" :style="[{display: reload ? 'flex' : 'none', bottom: '0px', position: 'fixed'}]"/>
 		</view>
   </view>

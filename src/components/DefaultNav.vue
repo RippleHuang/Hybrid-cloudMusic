@@ -1,10 +1,10 @@
 <template>
 	<view class="nav">
-
+		<!-- #ifdef APP-PLUS -->
 		<view class="status_bar">
 			<!-- 这里是状态栏 -->
     </view>
-
+		<!-- #endif -->
 		<!-- 主页面导航 -->
 		<view class="default-nav">
 			<view class="nav-left on-touch" @tap="showPopup">
@@ -74,7 +74,7 @@ export default {
 		},
 		goSearch () {
 			uni.navigateTo({
-				url: '../search/search?search=search',
+				url: '/otherPages/search/search?search=search',
 				animationType: 'pop-in',
 				animationDuration: 200
 			})

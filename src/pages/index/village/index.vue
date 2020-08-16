@@ -29,8 +29,8 @@
         </view>
 			</swiper-item>
 			<swiper-item class="tab-swiper-item">
+        <loading :height="6.58" :style="[{display: (!loading && $store.state.loginState) ? 'flex' : 'none'}]" />
 				<view class="village-event" v-if="$store.state.loginState">
-          <loading :height="6.58" :style="[{display: !loading ? 'flex' : 'none'}]" />
 					<dynamic-card
 						:dataMsg="eventAll"
 						:loading="loading"
@@ -42,10 +42,12 @@
           </view>
           <text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
         </view>
-        <view class="empty" v-else>
-          <text class="iconfont icon-kong"></text>
-          <text>需要登录</text>
-        </view>
+        <scroll-view v-else>
+          <view class="empty">
+            <text class="iconfont icon-kong"></text>
+            <text>需要登录</text>
+          </view>
+        </scroll-view>
 			</swiper-item>
 		</swiper>
   </scroll-view>
@@ -57,6 +59,11 @@ import DynamicCard from '@/components/DynamicCard'
 import { hotwallVillage, eventVillage } from '@/api/apis'
 export default {
   name: 'VillageIndex',
+  props: {
+    activeIndex: {
+      type: Number
+    }
+  },
   data () {
     return {
 			list: [{
@@ -79,12 +86,16 @@ export default {
       finished: false
     }
   },
-  created () {
-    this.getHotwallVillage()
-  },
   watch: {
     current (val, oldV) {
-      if (val === 1 && this.event.length === 0) this.getEventVillage(0)
+      if (val === 1 && this.event.length === 0 && this.$store.state.loginState) {
+        this.getEventVillage(0)
+      }
+    },
+    activeIndex (val, oldV) {
+      if (val === 2 && this.hotwall.length === 0) {
+        this.getHotwallVillage()
+      }
     }
   },
   methods: {
@@ -161,7 +172,9 @@ export default {
 <style lang="scss" scoped>
 .village-event {
   position: relative;
+  /* #ifndef APP-PLUS */
   padding-top: 80rpx;
+  /* #endif */
   /* #ifdef APP-PLUS */
   padding-top: $height*0.8;
   /* #endif */
@@ -188,12 +201,15 @@ export default {
   position: absolute;
   bottom: 0;
   display: flex;
+  z-index: 3;
   justify-content: center;
   align-items: center;
-  z-index: 3;
   width: $width;
   height: 100rpx;
   background-color: #fff;
   border-top: 1px solid #ccc;
+}
+.empty {
+  margin-top: 300rpx;
 }
 </style>

@@ -114,7 +114,7 @@ export default {
     // 用户信息页
     userInfo () {
       uni.navigateTo({
-        url: '../userInfo/userInfo?accountUid=' + this.accountUid,
+        url: '/otherPages/serInfo/userInfo?accountUid=' + this.accountUid,
         animationType: 'pop-in',
         animationDuration: 200
       })
