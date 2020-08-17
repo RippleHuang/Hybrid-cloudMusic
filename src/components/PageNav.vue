@@ -24,6 +24,7 @@
         <!-- 用户信息页 -->
         <text :style="[{display: isFixed ? 'inline-block' : 'none'}]">{{title}}</text>
       </view>
+      <!-- #ifndef MP -->
       <!-- 歌单 -->
       <view class="icons" v-if="songList" @click="no">
         <text class="iconfont icon-sousuo"></text>
@@ -31,6 +32,7 @@
       </view>
       <!-- 分享 -->
       <text v-if="share" class="iconfont icon-fenxiang"></text>
+      <!-- #endif -->
     </view>
   </view>
 </template>
@@ -140,10 +142,10 @@ export default {
     width: $width;
     height: $height;
     padding: 0 20rpx;
-    /* #ifndef APP-PLUS */
+    /* #ifndef APP-PLUS || MP */
     line-height: $height;
     /* #endif */
-    /* #ifdef APP-PLUS */
+    /* #ifndef H5 */
     padding: var(--status-bar-height) 20rpx 0;
     /* #endif */
     color: #fff;
@@ -159,7 +161,7 @@ export default {
         position: absolute;
         left: 90rpx;
         top: 23rpx;
-        /* #ifdef APP-PLUS */
+        /* #ifndef H5 */
         top: var(--status-bar-height);
         /* #endif */
         display: flex;
@@ -205,7 +207,7 @@ export default {
       .song-show-nav {
         @extend .play;
         top: 38rpx;
-        /* #ifdef APP-PLUS */
+        /* #ifndef H5 */
         top: calc(6px + var(--status-bar-height));
         /* #endif */
         width: $width*0.65;

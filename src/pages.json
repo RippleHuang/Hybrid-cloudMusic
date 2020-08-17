@@ -8,56 +8,44 @@
 			"style": {
 				// #ifndef MP
 					"navigationStyle": "custom",
-				// #endif
 					"enablePullDownRefresh": true
+				// #endif
 			}
 		},
 		{
 			"path" : "pages/loginIndex/LoginIndex",
 			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path" : "pages/loginIndex/LoginPhone",
 			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path" : "pages/loginIndex/PhonePass",
 			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path" : "pages/loginIndex/ForgetPass",
 			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path" : "pages/loginIndex/PhoneVerify",
 			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path" : "pages/loginIndex/NickName",
 			"style": {
-				// #ifndef MP
-					"navigationStyle": "custom"
-				// #endif
+				"navigationStyle": "custom"
 			}
 		}
 	],
@@ -83,97 +71,73 @@
 			{
 				"path" : "showsong/showSongList",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "songListSquare/SongListSquare",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "rankingList/RankingList",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "moreNewPlate/MoreNewPlate",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "recommend/Recommend",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "newSongs/NewSongs",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "myRadio/MyRadio",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "myFavorite/MyFavorite",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "compileSongList/CompileSongList",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "recentPlay/RecentPlay",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "userInfo/userInfo",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
 				"path" : "listAll/ListAll",
 				"style": {
-					// #ifndef MP
-						"navigationStyle": "custom"
-					// #endif
+					"navigationStyle": "custom"
 				}
 			},
 			{
@@ -187,14 +151,9 @@
 		]
 	}],
 	"globalStyle": {
-		// #ifdef MP
-			"navigationBarTextStyle": "balck",
-		// #endif
-		// #ifndef MP
-			"navigationBarTextStyle": "white",
-		// #endif
+		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "网易云",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#DD001B",
+		"backgroundColor": "#DD001B"
 	}
 }

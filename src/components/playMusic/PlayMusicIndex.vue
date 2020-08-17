@@ -132,7 +132,7 @@ import MusicButton from './MusicButton'
 import Lyric from './Lyric'
 import SmallPlay from './SmallPlay'
 import Loading from '@/components/Loading'
-import { songUrl, checkSong, songLyric, likeMusicList } from '@/api/apis'
+import { songUrl, songLyric, likeMusicList } from '@/api/apis'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { filterSetTime } from '@/common/filters'
 import { shuffle } from '@/common/actionsArray'
@@ -174,9 +174,7 @@ export default {
       imgCoverShow: true,
       isShowAudioList: false,
       timer: '',
-      showModel: false,
-      // 音频api
-      audio: ''
+      showModel: false
     }
   },
   computed: {
@@ -188,32 +186,21 @@ export default {
       'audioIngSong',
       'fullScreen',
       'accountUid',
-      'loginState'
+      'loginState',
+			'audio'
     ])
   },
   watch: {
     // 当前歌曲变化，获取歌曲信息
     audioIngSong: {
-      immediate: true,
+			immediate: true,
       handler (val, oldVal) {
         if (this.playList.length) {
           // 防止切换模式时重新请求
           if (oldVal != null && val.id === oldVal.id) {
             return
           }
-          // 查看当前播放歌曲是否已喜欢
-          if (this.loginState) this.getLikeMusicList(val.id)
-          // 播放
-          if (val.dj) {
-            this.checkSong(val.mainTrackId)
-          } else {
-            this.checkSong(val.id)
-          }
-          this.allTime = val.duration ? val.duration : val.dt ? val.dt : 0
-          this.artist = val.album ? (val.album.artists || val.artists) : val.ar ? val.ar : ''
-          this.imgUrl = val.album ? (val.album.picUrl || val.album.artist.img1v1Url) : val.al ? val.al.picUrl
-            : val.coverUrl ? val.coverUrl : ''
-          this.name = val.name
+          this.initData(val)
         } else {
           // 暂停歌曲, 清空时长
           this.audio.seek(0)
@@ -223,7 +210,7 @@ export default {
     },
     audio (val, old) {
       // 销毁上一首歌曲
-      if (old) {
+      if (JSON.stringify(old) !== '{}') {
         old.destroy()
       }
     },
@@ -264,7 +251,8 @@ export default {
       'SET_PLAY_SATE',
       'SET_AUDIO_INDEX',
       'SET_AUDIO_MODE',
-      'SET_PLAY_LIST'
+      'SET_PLAY_LIST',
+			'SET_AUDIO'
     ]),
     ...mapActions(['clearPlayAll', 'deleteSong']),
     toast (title) {
@@ -273,30 +261,37 @@ export default {
         icon: 'none'
       })
     },
+    initData (val) {
+      // 查看当前播放歌曲是否已喜欢
+      if (this.loginState) this.getLikeMusicList(val.id)
+      // 播放
+      this.getSongUrl(val.id)
+      this.allTime = val.duration ? val.duration : val.dt ? val.dt : 0
+      this.artist = val.album ? (val.album.artists || val.artists) : val.ar ? val.ar : ''
+      this.imgUrl = val.album ? (val.album.picUrl || val.album.artist.img1v1Url) : val.al ? val.al.picUrl
+        : val.coverUrl ? val.coverUrl : ''
+      this.name = val.name
+    },
     // 获取音乐url
     getSongUrl (id) {
       songUrl(id)
         .then(data => {
           // 确认可以播放, 但是无版权的url为空,跳过
-          if (data.data[0].url != null) {
+          if (data.data[0].url === null) {
+            this.toast('暂无版权')
+            this.readySong = true
+            this.nextSong()
+          } else {
             this.url = data.data[0].url
-            this.audio = uni.createInnerAudioContext()
+						this.SET_AUDIO(uni.createInnerAudioContext())
             this.getSongLyric(id)
             this.starPlay()
-          } else {
-            // 移出播放列表
-            this.deleteSong(this.audioIngSong)
-            if (this.playList.length === 0) {
-              this.toast('暂无版权')
-            } else {
-              this.toast('暂无版权,播放下一首')
-              this.readySong = true
-              this.nextSong()
-            }
           }
         })
         .catch(() => {
-          this.toast('获取url失败')
+          this.toast('暂无版权')
+          this.readySong = true
+          this.nextSong()
         })
     },
     // 获取已喜欢的歌曲列表
@@ -313,29 +308,6 @@ export default {
     // 判断当前歌曲是否在已喜欢数组中
     filterAudio (arr, id) {
       this.isLike = arr.indexOf(id) > -1
-    },
-    // 查看歌曲是否可以播放
-    checkSong (id) {
-      checkSong(id)
-        .then(data => {
-          // 当可以播放的时候请求歌曲url
-          if (data.success) {
-            this.getSongUrl(id)
-          } else {
-            // 移出播放列表
-            this.deleteSong(this.audioIngSong)
-            if (this.playList.length === 0) {
-              this.toast('暂无版权')
-            } else {
-              this.toast('暂无版权,播放下一首')
-              this.readySong = true
-              this.nextSong()
-            }
-          }
-        })
-        .catch(() => {
-          this.toast('暂无版权')
-        })
     },
     // 当点击时改变进度条时改变歌曲播放时间,value为回调参数
     changeTime () {
@@ -516,6 +488,7 @@ export default {
         this.loop()
         return
       }
+			this.audio.destroy()
       let nowIndex = this.audioIngIndex - 1
       if (nowIndex === -1) {
         nowIndex = this.audioList.length - 1
@@ -533,6 +506,7 @@ export default {
         this.loop()
         return
       }
+			this.audio.destroy()
       let nowIndex = this.audioIngIndex + 1
       if (nowIndex === this.audioList.length) {
         nowIndex = 0

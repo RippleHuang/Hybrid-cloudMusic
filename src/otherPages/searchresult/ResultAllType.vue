@@ -3,7 +3,7 @@
     <!-- 单曲 -->
     <view class="title" v-if="typeData.song">
       单曲
-      <view class="play" @tap="$store.dispatch('startPlayAll', { list: typeData.song })">
+      <view class="play" @tap="playAll(typeData.song)">
         <text class="iconfont icon-bofang1"></text>
         播放全部
       </view>
@@ -19,7 +19,7 @@
         :name="item.name"
         :privacy="0"
         home
-        @playSong="$store.dispatch('addToAudioList', item)"
+        @playSong="play(item)"
       />
     </view>
     <view class="more on-touch" v-if="typeData.songText" @tap="moreList(1)">{{typeData.songText}}&nbsp;&gt;</view>
@@ -127,6 +127,12 @@ export default {
     ...mapGetters(['audioIngSong'])
   },
   methods: {
+		play (song) {
+			this.$store.dispatch('addToAudioList', song)
+		},
+    playAll (song) {
+			this.$store.dispatch('startPlayAll', song)
+		},
     goSongShow (id, type) {
       uni.navigateTo({
 				url: `../showsong/showSongList?${type}=${id}`,

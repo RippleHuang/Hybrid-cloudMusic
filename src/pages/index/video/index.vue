@@ -15,16 +15,16 @@
 		</u-tabs-swiper>
 		<swiper class="tabs-swiper" :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish">
 			<swiper-item class="tab-swiper-item"  v-for="(data, listTag) in listTag" :key="listTag.id">
-				<scroll-view scroll-y class="video-scroll" @scrolltolower="pullDown" v-if="$store.state.loginState">
+				<scroll-view scroll-y class="video-scroll" @scrolltolower="pullDown" v-if="loginState">
 					<!-- 视频列表 -->
 					<loading :height="6.58" :position="'relative'" :style="[{display: loading ? 'flex' : 'none'}]" />
 					<view class="video-list-con" :style="[{display: !loading ? 'block' : 'none'}]">
 						<video-card
 							v-for="(item, ind) in data.data" :key="ind"
 							:videoData="item.data"
+							:vidList="vidList"
 							:active="active"
 							:type="item.type"
-              @getVid="getVid"
 						/>
 					</view>
         </scroll-view>
@@ -44,6 +44,7 @@ import VideoCard from '@/components/VideoCard'
 import Loading from '@/components/Loading'
 import { videoTag, videoGroup } from '@/api/apis'
 import { getRandomNumberArray } from '@/common/randomNumberArray'
+import { mapGetters } from 'vuex'
 export default {
   name: 'VideoIndex',
   props: {
@@ -62,15 +63,19 @@ export default {
       // 数据
       listTag: [],
       videoData: [],
-      vid: 0 || ''
+			vidList: []
     }
   },
+	computed: {
+		...mapGetters(['loginState'])
+	},
   watch: {
     // active 变化清空数据
     active: {
       handler (val, oldV) {
         this.finished = false
         this.videoData = []
+				this.vidList = []
         // 首次需要加载
         if (this.listTag[val].data.length === 0) {
           this.loading = true
@@ -83,7 +88,7 @@ export default {
         this.getVideoTag()
       }
     },
-    '$store.state.loginState': {
+    loginState: {
       handler (val, oldV) {
         if (val && this.listTag.length === 0) {
           this.getVideoTag()
@@ -129,6 +134,9 @@ export default {
       videoGroup(id, offset)
         .then(data => {
           this.videoData = data.datas
+					data.datas.forEach(item => {
+						this.vidList.push(item.data.vid)
+					})
           this.division()
         })
     },
@@ -154,27 +162,6 @@ export default {
           this.getVideoGroup(this.listTag[this.active].id, this.listTag[this.active].sum)
         }
       }
-    },
-    getVid (vid) {
-      this.vid = vid
-      console.log('this.vid: ', this.vid);
-      this.pauseOther()
-    },
-    // 暂停其他视频
-    pauseOther () {
-      const arr = []
-      const query = uni.createSelectorQuery().in(this)
-      query.selectAll('.video-mp4').boundingClientRect(data => {
-        arr.push(...JSON.parse(JSON.stringify(data)))
-      }).exec()
-      const _this = this
-      arr.forEach(item => {
-        if (item.id) {
-          const video = uni.createVideoContext(item.id)
-          // 将videos中其他的video全部暂停
-          item.id !== _this.vid && video.pause()
-        }
-      })
     }
   },
   components: {

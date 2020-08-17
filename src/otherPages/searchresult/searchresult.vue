@@ -39,7 +39,7 @@
         <!-- 单曲 -->
         <swiper-item class="tab-swiper-item">
           <scroll-view scroll-y class="scroll-down" @scrolltolower="pullDown">
-            <view class="play on-touch" @tap="$store.dispatch('startPlayAll', { list: searchData[1].data })">
+            <view class="play on-touch" @tap="playAll(searchData[1].data)">
               <text class="iconfont icon-bofang1"></text>
               播放全部
             </view>
@@ -54,7 +54,7 @@
                 :name="item.name"
                 :privacy="0"
                 home
-                @playSong="$store.dispatch('addToAudioList', item)"
+                @playSong="play(item)"
               />
             </view>
             <text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
@@ -213,6 +213,12 @@ export default {
     }
   },
   methods: {
+		play (song) {
+			this.$store.dispatch('addToAudioList', song)
+    },
+    playAll (song) {
+			this.$store.dispatch('startPlayAll', song)
+		},
     goSongShow (id, type) {
       uni.navigateTo({
 				url: `../showsong/showSongList?${type}=${id}`,

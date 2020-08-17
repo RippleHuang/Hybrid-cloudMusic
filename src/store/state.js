@@ -11,5 +11,6 @@ export default {
   audioIngIndex: -1, // 正在播放的这一首歌曲索引
   fullScreen: false, // 是否是全屏展示播放页
   searchHistory: uni.getStorageSync('keywords') || [], //  搜索历史
-  refreshState: 0 // 刷新
+  refreshState: 0, // 刷新
+	audio: {} // 音频
 }

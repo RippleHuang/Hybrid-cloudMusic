@@ -59,8 +59,13 @@ export default {
     },
     // 跳转到相应页面
     pushPage () {
-      // 加密密码保存到 sessionStorage
+      // 加密密码,微信小程序不能使用encrypt
+      // #ifndef MP
       const cipherText = this.$encrypt(this.forgetPhonePass, 'PhonePassword')
+      // #endif
+      // #ifdef MP
+      const cipherText = escape(this.forgetPhonePass)
+      // #endif
       uni.setStorageSync('cipherText', cipherText)
       if (this.path === 'phonepass') {
         this.sendVerifyNum(this.phone)

@@ -21,7 +21,7 @@
         </template>
         <!-- 歌单列表 -->
         <!-- 没登录的情况下列表项显示 -->
-        <scroll-view scroll-y class="song-group" v-if="!$store.state.loginState">
+        <scroll-view scroll-y class="song-group" :style="[{display: !loginState ? 'flex' : 'none'}]">
           <view class="song-list" @tap="toast('需要登录')">
             <view class="left">
               <view class="list-cover">
@@ -42,7 +42,7 @@
           </view>
         </scroll-view>
         <!-- 登录的情况下列表项显示 -->
-        <scroll-view scroll-y class="song-group" v-if="$store.state.loginState">
+        <scroll-view scroll-y class="song-group" v-if="createList.length > 0 || myLoveList.length > 0">
           <!-- 我喜欢的音乐 -->
           <song-list-li
             v-if="myLoveList[0] != null"
@@ -154,7 +154,7 @@ export default {
       },
       immediate: true
     },
-    '$store.state.loginState': {
+    loginState: {
       handler (val, oldV) {
         if (!val) {
           this.favoritesList = []

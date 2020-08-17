@@ -29,8 +29,8 @@
         </view>
 			</swiper-item>
 			<swiper-item class="tab-swiper-item">
-        <loading :height="6.58" :style="[{display: (!loading && $store.state.loginState) ? 'flex' : 'none'}]" />
-				<view class="village-event" v-if="$store.state.loginState">
+        <loading :height="6.58" :style="[{display: (!loading && loginState) ? 'flex' : 'none'}]" />
+				<view class="village-event" v-if="event.length > 0">
 					<dynamic-card
 						:dataMsg="eventAll"
 						:loading="loading"
@@ -42,7 +42,7 @@
           </view>
           <text class="finished" :style="[{display: finished ? 'flex' : 'none'}]">没有更多了</text>
         </view>
-        <scroll-view v-else>
+        <scroll-view :style="[{display: !loginState ? 'flex' : 'none'}]">
           <view class="empty">
             <text class="iconfont icon-kong"></text>
             <text>需要登录</text>
@@ -57,6 +57,7 @@ import VillageCard from './VillageCard'
 import Loading from '@/components/Loading'
 import DynamicCard from '@/components/DynamicCard'
 import { hotwallVillage, eventVillage } from '@/api/apis'
+import { mapGetters } from 'vuex'
 export default {
   name: 'VillageIndex',
   props: {
@@ -86,9 +87,12 @@ export default {
       finished: false
     }
   },
+	computed: {
+		...mapGetters(['loginState'])
+	},
   watch: {
     current (val, oldV) {
-      if (val === 1 && this.event.length === 0 && this.$store.state.loginState) {
+      if (val === 1 && this.event.length === 0 && this.loginState) {
         this.getEventVillage(0)
       }
     },

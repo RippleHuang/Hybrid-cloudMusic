@@ -135,6 +135,7 @@ export default {
   position: absolute;
   right: 0;
   bottom: 22rpx;
+  z-index: 5;
   font-size: 24rpx;
   color: rgb(77, 164, 235);
 }

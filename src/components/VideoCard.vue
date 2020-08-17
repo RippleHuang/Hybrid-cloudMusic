@@ -32,6 +32,7 @@
       class="play-video"
       :style="[{
         display: videoCanPlay ? 'block': 'none',
+				'padding-top': landscape ? '30px' : '0',
         'border-radius': !dynamic ? '10px' : landscape ? '0' : '5px'
       }]"
     >
@@ -98,7 +99,10 @@ export default {
     landscape: {
       type: Boolean,
       default: false
-    }
+    },
+		vidList: {
+			type: Array
+		}
   },
   data () {
     return {
@@ -127,14 +131,11 @@ export default {
         this.videoCanPlay = false
       }
     },
-    // 暂停上一个视频
-    vid: {
-      handler (val, oldV) {
-        this.$nextTick(() => {
-          this.$emit('getVid', val)
-        })
-      }
-    }
+		vid (val, oldV) {
+			// #ifdef H5
+			this.pauseOther()
+			// #endif
+		}
   },
   methods: {
     // 是否要获取
@@ -177,7 +178,7 @@ export default {
     },
     // 播放视频
     videoPlay () {
-      // #ifdef APP-PLUS
+      // #ifndef H5
       if (!this.landscape) {
         this.videoCanPlay = false
         const { vid, type } = this
@@ -190,7 +191,7 @@ export default {
         this.canplay = true
       }
       // #endif
-      // #ifndef APP-PLUS
+      // #ifdef H5
       this.canplay = true
       // #endif
     },
@@ -200,6 +201,14 @@ export default {
       const video = uni.createVideoContext(vid)
       video.pause()
     },
+		// 暂停其他视频
+		pauseOther () {
+			const _this = this
+			this.vidList.forEach(item => {
+				const video = uni.createVideoContext(item)
+				item !== _this.vid && video.pause()
+			})
+		},
     goUserInfo (videoData) {
       if (videoData) {
         uni.navigateTo({
@@ -293,7 +302,6 @@ export default {
   .play-video {
     position: relative;
     height: auto;
-    padding-top: 60rpx;
     background-color: black;
     overflow: hidden;
     .status_bar {

@@ -22,7 +22,7 @@
             v-for="(item, index) in 4"
             :key="index"
           >
-          {{arrCode[index]}}
+          {{arrCode[index] ? arrCode[index] : ''}}
           </label>
         </view>
       </view>
@@ -102,8 +102,13 @@ export default {
         if (this.path === 'forgetpass') {
           // 得到加密密码
           const cipherText = uni.getStorageSync('cipherText')
-          // Decrypt 解密
+          // Decrypt 解密,微信小程序不能使用
+          // #ifndef MP
           const pass = this.$decrypt(cipherText, 'PhonePassword')
+          // #endif
+          // #ifdef MP
+          const pass = unescape(cipherText)
+          // #endif
           // 修改密码
           this.changePass(this.phone, pass, this.code)
         } else if (this.path === 'phone') {
@@ -117,12 +122,13 @@ export default {
       register(phone, password, captcha, nickname)
         .then(data => {
           // 跳转到登录页
+          const _this = this
           uni.navigateTo({
             url: './LoginIndex',
             animationType: 'pop-in',
             animationDuration: 200,
             success: function () {
-              this.toast('修改成功')
+              _this.toast('修改成功')
             }
           })
         })

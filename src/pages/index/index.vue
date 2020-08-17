@@ -3,12 +3,12 @@
 		<!-- 可移动选项卡 -->
 		<view
 			class="default-page"        
-			:style="[{display: $store.state.fullScreen ? 'none' : 'flex'}]"
+			:style="[{display: fullScreen ? 'none' : 'flex'}]"
 		>
 			<default-nav @changeIndex="changeIndex" :tabIndex="activeIndex" @showPopup="show = !show" />
 			<swiper
 				class="tabs-swiper"
-				:class="[$store.state.audioList.length ? 'small-height': '']"
+				:class="[audioList.length ? 'small-height': '']"
 				:current="activeIndex"
 				@change="tabChange"
 			>
@@ -32,7 +32,7 @@
 			</swiper>
 		</view>
 		<!-- 通过是否有播放列表控制显示 -->
-    <play-music-index v-if="$store.state.audioList.length" />
+    <play-music-index v-if="audioList.length" />
 		<!-- 加载 -->
     <view class="load" :style="[{display: loadStyle}]">
       <text class="load-title">音樂的力量</text>
@@ -158,7 +158,7 @@ export default {
 		}, 1000)
 	},
 	computed: {
-		...mapGetters(['accountUid', 'loginState'])
+		...mapGetters(['accountUid', 'loginState', 'fullScreen', 'audioList'])
 	},
 	methods: {
 		toast (title) {

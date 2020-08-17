@@ -39,7 +39,7 @@
           :url="item.song.album.blurPicUrl"
           :songtitle="item.song.name"
           :newPlatetype="typeStr"
-          @goPage="$store.dispatch('addToAudioList', item.song)"
+          @goPage="play(item.song)"
           @loadingImg="loadingImg"
         />
       </view>
@@ -101,6 +101,9 @@ export default {
 				animationDuration: 200
 			})
     },
+		play (song) {
+			this.$store.dispatch('addToAudioList', song)
+		},
     loadingImg (data) {
       this.$nextTick(() => {
         this.opacity = data ? 1 : 0

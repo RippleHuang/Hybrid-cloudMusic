@@ -217,7 +217,7 @@ html, body, .uni-scroll-view, .uni-scroll-view-content {
       }
     }
     // 通过兄弟选择器来使整个容器active
-    .left:active, .left:active ~* {
+    .left:active, .left:active + .compile, .left:active + .heart-module {
       background: rgba(1, 1, 1, .1);
       .title-btn {
         background: transparent;
@@ -274,7 +274,7 @@ html, body, .uni-scroll-view, .uni-scroll-view-content {
 }
 // 滑块宽
 .u-slider {
-  width: $width*0.8;
+  width: $width*0.72;
 }
 // 迷你播放器圆形进度条
 .u-canvas {

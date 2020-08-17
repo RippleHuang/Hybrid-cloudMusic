@@ -16,10 +16,10 @@
       立即体验
       </button>
       <view class="login-icons">
-        <text @tap.stop="unfinished"><i class="iconfont icon-weixin"></i></text>
-        <text @tap.stop="unfinished"><i class="iconfont icon-qq"></i></text>
-        <text @tap.stop="unfinished"><i class="iconfont icon-weibo"></i></text>
-        <text @tap.stop="unfinished"><i class="iconfont icon-wangyi"></i></text>
+        <text @tap.stop="unfinished"><text class="iconfont icon-weixin"></text></text>
+        <text @tap.stop="unfinished"><text class="iconfont icon-qq"></text></text>
+        <text @tap.stop="unfinished"><text class="iconfont icon-weibo"></text></text>
+        <text @tap.stop="unfinished"><text class="iconfont icon-wangyi"></text></text>
       </view>
       <view @tap.stop class="text" :style="[{animationPlayState: shake ? 'running' : 'paused'}]">
         <u-checkbox
@@ -198,7 +198,7 @@ export default {
           background-color: rgba(255, 255, 255, .3);
           border: 1rpx solid transparent;
         }
-        text {
+        .iconfont {
           font-size: 42rpx;
         }
       }

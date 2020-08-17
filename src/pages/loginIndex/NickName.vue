@@ -56,8 +56,13 @@ export default {
         const code = uni.getStorageSync('code')
         // 得到加密密码
         const cipherText = uni.getStorageSync('cipherText')
-        // Decrypt 解密
+        // Decrypt 解密,微信小程序不能使用
+        // #ifndef MP
         const pass = this.$decrypt(cipherText, 'PhonePassword')
+        // #endif
+        // #ifdef MP
+        const pass = unescape(cipherText)
+        // #endif
         this.registerPass(phone, pass, code, this.nickName)
       } else {
         this.toast('请输入不少于2个汉字或4个字符的昵称')

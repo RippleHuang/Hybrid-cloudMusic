@@ -67,7 +67,7 @@
         /* 微信小程序特有相关 */
         "appid" : "wxcfa9832f67ec25a0",
         "setting" : {
-            "urlCheck" : false,
+            "urlCheck" : true,
             "minified" : true
         },
         "usingComponents" : true

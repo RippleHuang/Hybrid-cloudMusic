@@ -195,13 +195,6 @@ export default {
         icon: 'none'
       })
     },
-    full () {
-      // 第一次播放时全屏
-      if (this.audioList.length === 0) {
-        this.$store.commit('SET_FULL_SCREEN', true)
-        this.goIndex()
-      }
-    },
     goIndex () {
       uni.navigateTo({
         url: '/pages/index/index',
@@ -210,11 +203,9 @@ export default {
       })
     },
     setAudioList (index) {
-      this.full()
       this.selectPlay({ list: this.songListAll, index })
     },
     startPlay () {
-      this.full()
       this.startPlayAll({ list: this.songListAll })
     },
     // 收藏或取消收藏
@@ -312,7 +303,12 @@ export default {
   background-color: #fff;
   .sticky-top {
     position: sticky;
+    /* #ifdef APP-PLUS */
     top: 10rpx;
+    /* #endif */
+    /* #ifndef APP-PLUS */
+    top: 0;
+    /* #endif */
     z-index: 6;
     display: flex;
     justify-content: space-between;

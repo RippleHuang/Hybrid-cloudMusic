@@ -28,7 +28,7 @@
         </view>
       </view>
       <!-- 其他榜单 -->
-      <view class="ranking-for" v-for="(ranking, index) in rankingData" :key="index + 'title'">
+      <view class="ranking-for" v-for="(ranking, rankingData) in rankingData" :key="rankingData.title">
         <text class="ranking-title">{{ranking.title}}</text>
         <view class="song-list-con">
           <img-card

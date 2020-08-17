@@ -14,5 +14,6 @@ export default {
   searchHistory: state => { 
     if (Array.isArray(state.searchHistory)) return state.searchHistory
     else return JSON.parse(state.searchHistory)
-  }
+  },
+	audio: state => state.audio,
 }

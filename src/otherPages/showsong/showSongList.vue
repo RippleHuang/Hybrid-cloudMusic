@@ -28,7 +28,7 @@
 						<!-- 去用户信息页 -->
 						<view class="info u-line-1" :style="[{display: !loading ? 'flex' : 'none'}]" @tap.stop="goUserInfo">
 							<image v-if="avatarUrl" :src="avatarUrl + '?param=50y50'"></image>
-							<text>{{nickname}} <text class="iconfont icon-arrow-right"></text></text>
+							<text class="nickname">{{nickname}} <text class="iconfont icon-arrow-right"></text></text>
 						</view>
 						<view class="song-list-info u-line-2" :style="[{display: !loading ? 'flex' : 'none'}]">
 							<text class="u-line-2"
@@ -379,7 +379,12 @@ export default {
             height: 50rpx;
             border-radius: 50%;
           }
-          text {
+					.nickname {
+						display: inline-block;
+						margin-left: 10rpx;
+						width: $width*0.48;
+					}
+          .iconfont {
             margin-left: 10rpx;
             font-size: 28rpx;
             color: #eee;

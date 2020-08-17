@@ -7,9 +7,9 @@
       :height="'60px'"
       share
     />
-    <view class="body" :style="{ opacity }" @click="bgcPreview">
+    <view class="body">
       <view class="left-con">
-        <image class="account-bgi" :style="[{display: loading ? 'block' : 'none'}]" :src="avatarUrl + '?param=80y80'" @click.stop="avaPreview" />
+        <image class="account-bgi" :style="[{display: loading ? 'block' : 'none'}]" :src="avatarUrl + '?param=80y80'" />
         <view class="information">
           <text class="account-nickname">{{nickName}}</text>
           <view class="relation">
@@ -19,7 +19,7 @@
           </view>
           <view class="info">
             <view class="age"
-              :style="{ background: gender === 1 ? 'rgba(104, 125, 194, 0.8)':'rgba(255, 119, 165, 0.8)' }"
+              :style="[{ background: gender === 1 ? 'rgba(104, 125, 194, 0.8)':'rgba(255, 119, 165, 0.8)'}]"
               v-if="birthday > 0"
             >
               <text class="iconfont icon-nan" style="color: #6eccff;" v-if="gender === 1"></text>
@@ -30,15 +30,15 @@
           </view>
         </view>
       </view>
-      <view class="right-btn" v-if="$store.state.nickName === nickName">
-        <button class="compile" @click.stop="noAchieve">编辑</button>
-        <button class="changebgc" @click.stop="noAchieve">更换背景</button>
+      <view class="right-btn" v-if="otherName === nickName">
+        <button class="compile" @tap.stop="noAchieve">编辑</button>
+        <button class="changebgc" @tap.stop="noAchieve">更换背景</button>
       </view>
       <view class="right-btn" v-else>
-        <button class="compile" style="background: #dd001b;" @click.stop="noAchieve">
+        <button class="compile" style="background: #dd001b;" @tap.stop="noAchieve">
           <text class="iconfont icon-jia"></text> 关注
         </button>
-        <button class="changebgc" @click.stop="noAchieve">
+        <button class="changebgc" @tap.stop="noAchieve">
           <text class="iconfont icon-email"></text> 发私信
         </button>
       </view>
@@ -53,9 +53,6 @@ export default {
   props: {
     isFixed: {
       type: Boolean
-    },
-    opacity: {
-      type: Number
     },
     loading: {
       type: Boolean
@@ -85,20 +82,24 @@ export default {
       type: String
     }
   },
+	data () {
+		return {
+			otherName: ''
+		}
+	},
+	created () {
+		this.otherName = this.$store.state.nickName
+	},
   methods: {
     rollback () {
-      this.$router.go(-1)
+      uni.navigateBack({
+        delta: 1,
+        animationType: 'pop-out',
+        animationDuration: 200
+      })
     },
     noAchieve () {
-      this.$toast('此功能尚未开通, 敬请期待')
-    },
-    // 预览背景
-    bgcPreview () {
-      ImagePreview({ images: [this.coverImgUrl], closeable: true })
-    },
-    // 预览头像
-    avaPreview () {
-      ImagePreview({ images: [this.avatarUrl], closeable: true })
+      uni.showToast({title:'此功能尚未开通, 敬请期待', icon: 'none'})
     }
   },
   filters: {

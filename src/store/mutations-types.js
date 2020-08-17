@@ -14,3 +14,4 @@ export const SET_FULL_SCREEN = 'SET_FULL_SCREEN' // 全屏播放器或迷你播�
 export const SET_HISTORY = 'SET_HISTORY' // 搜索历史
 export const CLEAR_HISTORY = 'CLEAR_HISTORY' // 清除历史
 export const REFRESH = 'REFRESH' // 刷新
+export const SET_AUDIO = 'SET_AUDIO' // 歌曲

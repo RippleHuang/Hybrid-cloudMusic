@@ -1,6 +1,6 @@
 <template>
   <!-- 迷你播放器留空 -->
-  <view class="song-square" :class="[$store.state.audioList.length ? 'small-height' : '']">
+  <view class="song-square" :class="[audioList.length ? 'small-height' : '']">
     <page-nav
       :title="'歌单广场'"
       :background="'#dd001b'"
@@ -53,6 +53,7 @@ import PageNav from '@/components/PageNav'
 import Loading from '@/components/Loading'
 import ImgCard from '@/components/ImgCard'
 import { recSongList, highQuality } from '@/api/apis'
+import { mapGetters } from 'vuex'
 export default {
   name: 'SongListSquare',
   data () {
@@ -106,7 +107,10 @@ export default {
 	},
 	onLoad () {
 		this.getRecSongList(30, this.getData[0].cat, 0)
-	},
+  },
+  computed: {
+    ...mapGetters(['audioList'])
+  },
   watch: {
     // active 变化清空数据
     active: {

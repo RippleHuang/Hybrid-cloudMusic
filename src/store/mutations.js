@@ -7,6 +7,7 @@ import {
   NICK_NAME,
   AVATAR_URL,
   SET_PLAY_SATE,
+	SET_AUDIO,
   SET_AUDIO_LIST,
   SET_AUDIO_INDEX,
   SET_AUDIO_MODE,
@@ -54,7 +55,13 @@ export default {
   // 播放状态
   [SET_PLAY_SATE] (state, boole) {
     state.playState = boole
+		if (!boole && JSON.stringify(state.audio) !== '{}') state.audio.pause()
+		
   },
+	// 播放歌曲信息
+	[SET_AUDIO] (state, list) {
+	  state.audio = list
+	},
   // 播放列表信息
   [SET_AUDIO_LIST] (state, list) {
     state.audioList = list
